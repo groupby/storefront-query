@@ -1,0 +1,59 @@
+{
+  "name": "@storefront/query",
+  "version": "0.0.0-development",
+  "description": "StoreFront query component",
+  "keywords": [
+    "storefront",
+    "storefront-component"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/groupby/storefront-query.git"
+  },
+  "bugs": {
+    "url": "https://github.com/groupby/storefront-query/issues"
+  },
+  "homepage": "https://github.com/groupby/storefront-query#readme",
+  "author": "Ben Teichman <ben.teichman@groupbyinc.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist/"
+  ],
+  "scripts": {
+    "start": "start-runner -f tasks.js",
+    "prepush": "yarn start prepush",
+    "prepublish": "yarn start build"
+  },
+  "release": {
+    "verifyConditions": "condition-circle"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    },
+    "restart": {
+      "watchFiles": [
+        "src/**/*.ts",
+        "src/**/*.html"
+      ]
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.18",
+    "babel-preset-latest": "^6.24.1",
+    "condition-circle": "^1.5.0",
+    "cz-conventional-changelog": "^2.0.0",
+    "husky": "^0.13.3",
+    "re-start": "^1.12.2",
+    "start-babel-cli": "^4.0.1",
+    "start-copy": "^0.2.0",
+    "start-files": "^2.0.0",
+    "tslint": "^5.2.0",
+    "tslint-config-groupby": "^1.0.0",
+    "typescript": "^2.3.2"
+  },
+  "dependencies": {
+    "@storefront/core": "^1.1.1"
+  }
+}
