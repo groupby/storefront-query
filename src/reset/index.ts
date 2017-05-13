@@ -1,13 +1,17 @@
-import { view, Tag } from '@storefront/core';
+import { view, Component } from '@storefront/core';
 
-interface Reset extends Tag.Instance { }
+@view('gb-reset', require('./index.html'), require('./index.css'))
+class Reset extends Component {
 
-@view('gb-reset', require('./index.html'), {}, require('./index.css'))
-class Reset {
-
-  state: object = {
+  state: Reset.State = {
     onClick: () => this.flux.reset()
   };
+}
+
+namespace Reset {
+  export interface State {
+    onClick(): void;
+  }
 }
 
 export default Reset;
