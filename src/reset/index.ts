@@ -6,6 +6,11 @@ class Reset extends Component {
   state: Reset.State = {
     onClick: () => this.flux.reset()
   };
+
+  constructor() {
+    super();
+    this.expose('reset');
+  }
 }
 
 namespace Reset {

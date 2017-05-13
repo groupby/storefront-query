@@ -13,6 +13,11 @@ class Submit extends Component {
       }
     }
   };
+
+  constructor() {
+    super();
+    this.expose('submit');
+  }
 }
 
 namespace Submit {
