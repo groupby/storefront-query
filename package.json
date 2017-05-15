@@ -21,9 +21,12 @@
     "dist/"
   ],
   "scripts": {
-    "start": "start-runner -f tasks.js",
-    "prepush": "yarn start prepush",
-    "prepublish": "yarn start build"
+    "start": "start-runner -p re-start/presets/typescript",
+    "dev": "npm start dev",
+    "test": "npm start test",
+    "tdd": "npm start tdd",
+    "prepush": "npm start prepush",
+    "prepublish": "npm start build"
   },
   "release": {
     "verifyConditions": "condition-circle"
@@ -33,22 +36,17 @@
       "path": "./node_modules/cz-conventional-changelog"
     },
     "restart": {
-      "watchFiles": [
-        "src/**/*.ts",
-        "src/**/*.html"
-      ]
+      "watchFiles": "src/**/*.{ts,html,css}",
+      "copyFiles": "src/**/*.{html,css}"
     }
   },
   "devDependencies": {
-    "@types/node": "^7.0.18",
-    "babel-preset-latest": "^6.24.1",
+    "babel-preset-env": "^1.4.0",
     "condition-circle": "^1.5.0",
     "cz-conventional-changelog": "^2.0.0",
     "husky": "^0.13.3",
     "re-start": "^1.12.2",
     "start-babel-cli": "^4.0.1",
-    "start-copy": "^0.2.0",
-    "start-files": "^2.0.0",
     "tslint": "^5.2.0",
     "tslint-config-groupby": "^1.0.0",
     "typescript": "^2.3.2"
