@@ -54,6 +54,6 @@
     "typescript": "^2.3.2"
   },
   "dependencies": {
-    "@storefront/core": "^1.1.1"
+    "@storefront/core": "dev"
   }
 }
