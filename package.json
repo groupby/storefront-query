@@ -37,7 +37,10 @@
     },
     "restart": {
       "watchFiles": "src/**/*.{ts,html,css}",
-      "copyFiles": "src/**/*.{html,css}"
+      "copyFiles": "src/**/*.{html,css}",
+      "releaseOpts": {
+        "public": true
+      }
     }
   },
   "devDependencies": {
@@ -45,7 +48,7 @@
     "condition-circle": "^1.5.0",
     "cz-conventional-changelog": "^2.0.0",
     "husky": "^0.13.3",
-    "re-start": "^1.12.2",
+    "re-start": "^1.13.0",
     "start-babel-cli": "^4.0.1",
     "tslint": "^5.2.0",
     "tslint-config-groupby": "^1.0.0",
