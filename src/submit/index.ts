@@ -6,12 +6,7 @@ class Submit extends Component {
   $query: Query.State;
 
   state: Submit.State = {
-    onClick: (event) => {
-      event.preventUpdate = true;
-      if (this.$query) {
-        this.$query.submit();
-      }
-    }
+    onClick: () => this.$query && this.$query.submit()
   };
 
   constructor() {
@@ -22,7 +17,7 @@ class Submit extends Component {
 
 namespace Submit {
   export interface State {
-    onClick(event: MouseEvent & { preventUpdate: boolean }): void;
+    onClick(): void;
   }
 }
 
