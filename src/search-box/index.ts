@@ -25,7 +25,7 @@ class SearchBox extends Component {
   }
 
   updateOriginalQuery = (originalQuery: string) =>
-    (originalQuery !== (this.state.originalQuery || this.refs.searchBox.value))
+    ((originalQuery || '') !== (this.state.originalQuery || this.refs.searchBox.value))
     && this.set({ originalQuery })
 
   onBeforeMount() {
