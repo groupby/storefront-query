@@ -1,4 +1,4 @@
-import pkg = require('../../src');
+import * as pkg from '../../src';
 import Query from '../../src/query';
 import Reset from '../../src/reset';
 import SearchBox from '../../src/search-box';
