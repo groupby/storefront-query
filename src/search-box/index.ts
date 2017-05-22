@@ -24,15 +24,15 @@ class SearchBox extends Component {
     this.flux.on(Events.ORIGINAL_QUERY_UPDATED, this.updateOriginalQuery);
   }
 
-  updateOriginalQuery = (originalQuery: string) =>
-    ((originalQuery || '') !== (this.state.originalQuery || this.refs.searchBox.value))
-    && this.set({ originalQuery })
-
   onBeforeMount() {
     if (this.$query) {
       this.$query.register(this);
     }
   }
+
+  updateOriginalQuery = (originalQuery: string) =>
+    ((originalQuery || '') !== (this.state.originalQuery || this.refs.searchBox.value))
+    && this.set({ originalQuery })
 }
 
 namespace SearchBox {
