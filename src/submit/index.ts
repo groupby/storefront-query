@@ -1,7 +1,7 @@
 import { view, Component } from '@storefront/core';
 import Query from '../query';
 
-@view('gb-submit', require('./index.html'), require('./index.css'))
+@view('gb-submit', require('./index.html'))
 class Submit extends Component {
   $query: Query.State;
 

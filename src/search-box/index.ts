@@ -3,7 +3,7 @@ import Query from '../query';
 
 const KEY_ENTER = 13;
 
-@view('gb-search-box', require('./index.html'), require('./index.css'))
+@view('gb-search-box', require('./index.html'))
 class SearchBox extends Component {
   $query?: Query.State;
   refs: { searchBox: HTMLInputElement };

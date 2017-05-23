@@ -1,6 +1,6 @@
 import { view, Component } from '@storefront/core';
 
-@view('gb-reset', require('./index.html'), require('./index.css'))
+@view('gb-reset', require('./index.html'))
 class Reset extends Component {
 
   state: Reset.State = {

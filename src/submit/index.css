@@ -1,7 +1,0 @@
-gb-submit.gb-stylish a, [data-is="gb-submit"].gb-stylish a {
-  padding: 4px;
-}
-
-gb-submit.gb-stylish a:hover, [data-is="gb-submit"] a:hover {
-  cursor: pointer;
-}

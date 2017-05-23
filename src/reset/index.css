@@ -1,9 +1,0 @@
-gb-reset.gb-stylish a, [data-is="gb-reset"].gb-stylish a {
-  color: #888;
-  padding: 4px;
-}
-
-gb-reset.gb-stylish a:hover, [data-is="gb-reset"].gb-stylish a:hover {
-  color: black;
-  cursor: pointer;
-}
