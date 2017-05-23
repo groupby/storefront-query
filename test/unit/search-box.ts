@@ -17,12 +17,42 @@ suite('SearchBox', ({ expect, spy }) => {
     });
 
     describe('state', () => {
+      let searchBox: SearchBox;
+
+      beforeEach(() => {
+        Component.prototype.flux = <any>{ on: () => null };
+        searchBox = new SearchBox();
+      });
+
       describe('onKeyUp()', () => {
-        it('should set preventUpdate');
+        it('should set preventUpdate', () => {
+          const event: any = { target: {} };
+          searchBox.flux = <any>{ autocomplete: () => null };
 
-        it('should call flux.search() when enter key pressed');
+          searchBox.state.onKeyUp(event);
 
-        it('should call flux.autocomplete() when any other key pressed');
+          expect(event.preventUpdate).to.be.true;
+        });
+
+        it('should call flux.search() when enter key pressed', () => {
+          const value = 'red rum';
+          const search = spy();
+          searchBox.flux = <any>{ search };
+
+          searchBox.state.onKeyUp(<any>{ target: { value }, keyCode: 13 });
+
+          expect(search.calledWith(value)).to.be.true;
+        });
+
+        it('should call flux.autocomplete() when any other key pressed', () => {
+          const value = 'red rum';
+          const autocomplete = spy();
+          searchBox.flux = <any>{ autocomplete };
+
+          searchBox.state.onKeyUp(<any>{ target: { value } });
+
+          expect(autocomplete.calledWith(value)).to.be.true;
+        });
       });
     });
   });

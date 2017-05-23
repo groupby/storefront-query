@@ -16,10 +16,26 @@ suite('Submit', ({ expect, spy }) => {
     });
 
     describe('state', () => {
-      describe('onClick()', () => {
-        it('should call $query.submit()');
+      let submit: Submit;
 
-        it('should not call $query.submit() if no $query');
+      beforeEach(() => {
+        Component.prototype.expose = () => null;
+        submit = new Submit();
+      });
+
+      describe('onClick()', () => {
+        it('should call $query.submit()', () => {
+          const submitQuery = spy();
+          submit.$query = <any>{ submit: submitQuery };
+
+          submit.state.onClick();
+
+          expect(submitQuery.called).to.be.true;
+        });
+
+        it('should not call $query.submit() if no $query', () => {
+          expect(() => submit.state.onClick()).to.not.throw();
+        });
       });
     });
   });

@@ -16,8 +16,22 @@ suite('Reset', ({ expect, spy }) => {
     });
 
     describe('state', () => {
+      let reset: Reset;
+
+      beforeEach(() => {
+        Component.prototype.expose = () => null;
+        reset = new Reset();
+      });
+
       describe('onClick()', () => {
-        it('should call flux.reset()');
+        it('should call flux.reset()', () => {
+          const fluxReset = spy();
+          reset.flux = <any>{ reset: fluxReset };
+
+          reset.state.onClick();
+
+          expect(fluxReset.called).to.be.true;
+        });
       });
     });
   });
