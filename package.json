@@ -17,16 +17,19 @@
   "author": "Ben Teichman <ben.teichman@groupbyinc.com>",
   "license": "MIT",
   "main": "dist/index.js",
+  "module:esnext": "esnext/index.js",
   "files": [
-    "dist/"
+    "dist/",
+    "esnext/"
   ],
   "scripts": {
     "start": "start-runner -p re-start/presets/typescript",
+    "esnext": "npm start build -- -- --compileOpts.configFile tsconfig.esnext.json --outDir esnext",
     "dev": "npm start dev",
     "test": "npm start test",
     "tdd": "npm start tdd",
     "prepush": "npm start prepush",
-    "prepublish": "npm start build"
+    "prepublish": "npm start build && npm run esnext"
   },
   "release": {
     "verifyConditions": "condition-circle"
@@ -50,19 +53,19 @@
   "devDependencies": {
     "@types/chai": "^3.5.2",
     "@types/sinon": "^2.2.2",
-    "babel-preset-env": "^1.4.0",
-    "chai": "^3.5.0",
+    "babel-preset-env": "^1.5.1",
+    "chai": "^4.0.0",
     "condition-circle": "^1.5.0",
     "cz-conventional-changelog": "^2.0.0",
     "husky": "^0.13.3",
     "mocha-suite": "^1.0.9",
     "mock-require": "^2.0.2",
-    "re-start": "^1.13.0",
-    "sinon": "^2.2.0",
+    "re-start": "^1.14.1",
+    "sinon": "^2.3.2",
     "start-babel-cli": "^4.0.1",
-    "tslint": "^5.2.0",
+    "tslint": "^5.3.2",
     "tslint-config-groupby": "^1.0.0",
-    "typescript": "^2.3.2"
+    "typescript": "^2.3.3"
   },
   "dependencies": {
     "@storefront/core": "dev"
