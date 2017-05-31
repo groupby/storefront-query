@@ -1,110 +1,63 @@
-import { Component, Events } from '@storefront/core';
+import { Events } from '@storefront/core';
 import SearchBox from '../../src/search-box';
 import suite from './_suite';
 
 suite('SearchBox', ({ expect, spy }) => {
+  let searchBox: SearchBox;
 
-  describe('constructor()', () => {
-    afterEach(() => delete Component.prototype.flux);
+  beforeEach(() => searchBox = new SearchBox());
 
+  describe('init()', () => {
     it('should listen for ORIGINAL_QUERY_UPDATED', () => {
       const on = spy();
-      Component.prototype.flux = <any>{ on };
+      searchBox.flux = <any>{ on };
 
-      const searchBox = new SearchBox();
+      searchBox.init();
 
       expect(on.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery)).to.be.true;
     });
+  });
 
-    describe('state', () => {
-      let searchBox: SearchBox;
+  describe('updateOriginalQuery()', () => {
+    it('should set originalQuery', () => {
+      const originalQuery = 'orange soda';
+      const set = searchBox.set = spy();
+      searchBox.state = <any>{ originalQuery: 'cherry soda' };
 
-      beforeEach(() => {
-        Component.prototype.flux = <any>{ on: () => null };
-        searchBox = new SearchBox();
-      });
+      searchBox.updateOriginalQuery(originalQuery);
 
-      describe('onKeyUp()', () => {
-        it('should set preventUpdate', () => {
-          const event: any = { target: {} };
-          searchBox.flux = <any>{ autocomplete: () => null };
+      expect(set.calledWith({ originalQuery })).to.be.true;
+    });
 
-          searchBox.state.onKeyUp(event);
+    it('should not set originalQuery if value will not change', () => {
+      searchBox.state = <any>{};
+      searchBox.refs = <any>{ searchBox: { value: '' } };
+      searchBox.set = () => expect.fail();
 
-          expect(event.preventUpdate).to.be.true;
-        });
+      searchBox.updateOriginalQuery(undefined);
 
-        it('should call flux.search() when enter key pressed', () => {
-          const value = 'red rum';
-          const search = spy();
-          searchBox.flux = <any>{ search };
+      searchBox.refs = <any>{ searchBox: { value: 'cherry hardwood' } };
 
-          searchBox.state.onKeyUp(<any>{ target: { value }, keyCode: 13 });
+      searchBox.updateOriginalQuery('cherry hardwood');
 
-          expect(search.calledWith(value)).to.be.true;
-        });
+      searchBox.state = <any>{ originalQuery: 'masonry' };
 
-        it('should call flux.autocomplete() when any other key pressed', () => {
-          const value = 'red rum';
-          const autocomplete = spy();
-          searchBox.flux = <any>{ autocomplete };
-
-          searchBox.state.onKeyUp(<any>{ target: { value } });
-
-          expect(autocomplete.calledWith(value)).to.be.true;
-        });
-      });
+      searchBox.updateOriginalQuery('masonry');
     });
   });
 
-  describe('actions', () => {
-    let searchBox: SearchBox;
+  describe('onBeforeMount()', () => {
+    it('should call $query.register()', () => {
+      const register = spy();
+      searchBox.$query = <any>{ register };
 
-    before(() => Component.prototype.flux = <any>{ on: () => null });
-    beforeEach(() => searchBox = new SearchBox());
-    after(() => delete Component.prototype.flux);
+      searchBox.onBeforeMount();
 
-    describe('updateOriginalQuery()', () => {
-      it('should set originalQuery', () => {
-        const originalQuery = 'orange soda';
-        const set = searchBox.set = spy();
-        searchBox.state = <any>{ originalQuery: 'cherry soda' };
-
-        searchBox.updateOriginalQuery(originalQuery);
-
-        expect(set.calledWith({ originalQuery })).to.be.true;
-      });
-
-      it('should not set originalQuery if value will not change', () => {
-        searchBox.state = <any>{};
-        searchBox.refs = <any>{ searchBox: { value: '' } };
-        searchBox.set = () => expect.fail();
-
-        searchBox.updateOriginalQuery(undefined);
-
-        searchBox.refs = <any>{ searchBox: { value: 'cherry hardwood' } };
-
-        searchBox.updateOriginalQuery('cherry hardwood');
-
-        searchBox.state = <any>{ originalQuery: 'masonry' };
-
-        searchBox.updateOriginalQuery('masonry');
-      });
+      expect(register.calledWith(searchBox)).to.be.true;
     });
 
-    describe('onBeforeMount()', () => {
-      it('should call $query.register()', () => {
-        const register = spy();
-        searchBox.$query = <any>{ register };
-
-        searchBox.onBeforeMount();
-
-        expect(register.calledWith(searchBox)).to.be.true;
-      });
-
-      it('should not call $query.register() if no $query', () => {
-        expect(() => searchBox.onBeforeMount()).to.not.throw();
-      });
+    it('should not call $query.register() if no $query', () => {
+      expect(() => searchBox.onBeforeMount()).to.not.throw();
     });
   });
 });

@@ -1,41 +1,32 @@
-import { Component } from '@storefront/core';
 import Submit from '../../src/submit';
 import suite from './_suite';
 
 suite('Submit', ({ expect, spy }) => {
+  let submit: Submit;
 
-  describe('constructor()', () => {
-    afterEach(() => delete Component.prototype.expose);
+  beforeEach(() => submit = new Submit());
 
+  describe('init()', () => {
     it('should call expose()', () => {
-      const expose = Component.prototype.expose = spy();
+      const expose = submit.expose = spy();
 
-      new Submit();
+      submit.init();
 
       expect(expose.calledWith('submit')).to.be.true;
     });
 
-    describe('state', () => {
-      let submit: Submit;
+    describe('onClick()', () => {
+      it('should call $query.submit()', () => {
+        const submitQuery = spy();
+        submit.$query = <any>{ submit: submitQuery };
 
-      beforeEach(() => {
-        Component.prototype.expose = () => null;
-        submit = new Submit();
+        submit.state.onClick();
+
+        expect(submitQuery.called).to.be.true;
       });
 
-      describe('onClick()', () => {
-        it('should call $query.submit()', () => {
-          const submitQuery = spy();
-          submit.$query = <any>{ submit: submitQuery };
-
-          submit.state.onClick();
-
-          expect(submitQuery.called).to.be.true;
-        });
-
-        it('should not call $query.submit() if no $query', () => {
-          expect(() => submit.state.onClick()).to.not.throw();
-        });
+      it('should not call $query.submit() if no $query', () => {
+        expect(() => submit.state.onClick()).to.not.throw();
       });
     });
   });

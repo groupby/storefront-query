@@ -1,13 +1,13 @@
-import { view, Component, Events } from '@storefront/core';
+import { tag, Events, Tag } from '@storefront/core';
 import Query from '../query';
 
 const KEY_ENTER = 13;
 
-@view('gb-search-box', require('./index.html'))
-class SearchBox extends Component {
+@tag('gb-search-box', require('./index.html'))
+class SearchBox {
+
   $query?: Query.State;
   refs: { searchBox: HTMLInputElement };
-
   state: SearchBox.State = {
     onKeyUp: (event) => {
       event.preventUpdate = true;
@@ -19,8 +19,7 @@ class SearchBox extends Component {
     }
   };
 
-  constructor() {
-    super();
+  init() {
     this.flux.on(Events.ORIGINAL_QUERY_UPDATED, this.updateOriginalQuery);
   }
 
@@ -35,15 +34,15 @@ class SearchBox extends Component {
     && this.set({ originalQuery })
 }
 
+interface SearchBox extends Tag<any, SearchBox.State> { }
 namespace SearchBox {
-  export interface InputKeyboardEvent extends KeyboardEvent {
-    target: HTMLInputElement;
-    preventUpdate?: boolean;
-  }
-
   export interface State {
     originalQuery?: string;
     onKeyUp(event: InputKeyboardEvent): void;
+  }
+
+  export interface InputKeyboardEvent extends KeyboardEvent, Tag.Event {
+    target: HTMLInputElement;
   }
 }
 

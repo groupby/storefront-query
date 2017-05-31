@@ -1,13 +1,12 @@
-import { view, Component, Events } from '@storefront/core';
+import { tag, Events, Tag } from '@storefront/core';
 import SearchBox from '../search-box';
 
-@view('gb-query', require('./index.html'), [
+@tag('gb-query', require('./index.html'), [
   { name: 'mode', default: 'default' }
 ])
-class Query extends Component {
+class Query {
 
   registered: SearchBox[] = [];
-
   state: Query.State = {
     register: (tag) => this.registered.push(tag),
     submit: () => {
@@ -17,12 +16,12 @@ class Query extends Component {
     }
   };
 
-  constructor() {
-    super();
+  init() {
     this.expose('query');
   }
 }
 
+interface Query extends Tag<any, Query.State> { }
 namespace Query {
   export interface State {
     register(tag: SearchBox): void;

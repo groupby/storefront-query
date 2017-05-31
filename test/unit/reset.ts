@@ -1,37 +1,28 @@
-import { Component } from '@storefront/core';
 import Reset from '../../src/reset';
 import suite from './_suite';
 
 suite('Reset', ({ expect, spy }) => {
+  let reset: Reset;
 
-  describe('constructor()', () => {
-    afterEach(() => delete Component.prototype.expose);
+  beforeEach(() => reset = new Reset());
 
+  describe('init()', () => {
     it('should call expose()', () => {
-      const expose = Component.prototype.expose = spy();
+      const expose = reset.expose = spy();
 
-      new Reset();
+      reset.init();
 
       expect(expose.calledWith('reset')).to.be.true;
     });
 
-    describe('state', () => {
-      let reset: Reset;
+    describe('onClick()', () => {
+      it('should call flux.reset()', () => {
+        const fluxReset = spy();
+        reset.flux = <any>{ reset: fluxReset };
 
-      beforeEach(() => {
-        Component.prototype.expose = () => null;
-        reset = new Reset();
-      });
+        reset.state.onClick();
 
-      describe('onClick()', () => {
-        it('should call flux.reset()', () => {
-          const fluxReset = spy();
-          reset.flux = <any>{ reset: fluxReset };
-
-          reset.state.onClick();
-
-          expect(fluxReset.called).to.be.true;
-        });
+        expect(fluxReset.called).to.be.true;
       });
     });
   });

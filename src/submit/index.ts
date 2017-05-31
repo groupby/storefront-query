@@ -1,20 +1,20 @@
-import { view, Component } from '@storefront/core';
+import { tag, Tag } from '@storefront/core';
 import Query from '../query';
 
-@view('gb-submit', require('./index.html'))
-class Submit extends Component {
-  $query: Query.State;
+@tag('gb-submit', require('./index.html'))
+class Submit {
 
+  $query: Query.State;
   state: Submit.State = {
     onClick: () => this.$query && this.$query.submit()
   };
 
-  constructor() {
-    super();
+  init() {
     this.expose('submit');
   }
 }
 
+interface Submit extends Tag<any, Submit.State> { }
 namespace Submit {
   export interface State {
     onClick(): void;
