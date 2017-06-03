@@ -6,7 +6,7 @@ const KEY_ENTER = 13;
 @tag('gb-search-box', require('./index.html'))
 class SearchBox {
 
-  $query?: Query.State;
+  $query: Query.State;
   refs: { searchBox: HTMLInputElement };
   state: SearchBox.State = {
     onKeyUp: (event) => {
@@ -15,7 +15,12 @@ class SearchBox {
         this.flux.search(event.target.value);
       } else {
         this.flux.autocomplete(event.target.value);
+        this.flux.emit('sayt:show');
       }
+    },
+    onBlur: (event) => {
+      event.preventUpdate = true;
+      this.flux.emit('sayt:hide');
     }
   };
 
@@ -39,6 +44,7 @@ namespace SearchBox {
   export interface State {
     originalQuery?: string;
     onKeyUp(event: InputKeyboardEvent): void;
+    onBlur(event: FocusEvent & Tag.Event): void;
   }
 
   export interface InputKeyboardEvent extends KeyboardEvent, Tag.Event {

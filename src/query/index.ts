@@ -1,12 +1,14 @@
-import { tag, Events, Tag } from '@storefront/core';
+import { alias, tag, Events, Tag } from '@storefront/core';
 import SearchBox from '../search-box';
 
-@tag('gb-query', require('./index.html'), [
-  { name: 'mode', default: 'default' }
-])
+@alias('query')
+@tag('gb-query', require('./index.html'))
 class Query {
 
   registered: SearchBox[] = [];
+  props: Query.Props = {
+    mode: 'default'
+  };
   state: Query.State = {
     register: (tag) => this.registered.push(tag),
     submit: () => {
@@ -15,14 +17,15 @@ class Query {
       }
     }
   };
-
-  init() {
-    this.expose('query');
-  }
 }
 
-interface Query extends Tag<any, Query.State> { }
+interface Query extends Tag<Query.Props, Query.State> { }
 namespace Query {
+  export interface Props {
+    // TODO handle other modes
+    mode: 'default' | 'automatic';
+  }
+
   export interface State {
     register(tag: SearchBox): void;
     submit(): void;

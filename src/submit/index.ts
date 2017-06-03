@@ -1,6 +1,7 @@
-import { tag, Tag } from '@storefront/core';
+import { alias, tag, Tag } from '@storefront/core';
 import Query from '../query';
 
+@alias('submit')
 @tag('gb-submit', require('./index.html'))
 class Submit {
 
@@ -8,10 +9,6 @@ class Submit {
   state: Submit.State = {
     onClick: () => this.$query && this.$query.submit()
   };
-
-  init() {
-    this.expose('submit');
-  }
 }
 
 interface Submit extends Tag<any, Submit.State> { }
