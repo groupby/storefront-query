@@ -6,27 +6,21 @@ suite('Submit', ({ expect, spy }) => {
 
   beforeEach(() => submit = new Submit());
 
-  describe('init()', () => {
-    it('should call expose()', () => {
-      const expose = submit.expose = spy();
+  describe('constructor()', () => {
+    describe('state', () => {
+      describe('onClick()', () => {
+        it('should call $query.submit()', () => {
+          const submitQuery = spy();
+          submit.$query = <any>{ submit: submitQuery };
 
-      submit.init();
+          submit.state.onClick();
 
-      expect(expose.calledWith('submit')).to.be.true;
-    });
+          expect(submitQuery.called).to.be.true;
+        });
 
-    describe('onClick()', () => {
-      it('should call $query.submit()', () => {
-        const submitQuery = spy();
-        submit.$query = <any>{ submit: submitQuery };
-
-        submit.state.onClick();
-
-        expect(submitQuery.called).to.be.true;
-      });
-
-      it('should not call $query.submit() if no $query', () => {
-        expect(() => submit.state.onClick()).to.not.throw();
+        it('should not call $query.submit() if no $query', () => {
+          expect(() => submit.state.onClick()).to.not.throw();
+        });
       });
     });
   });

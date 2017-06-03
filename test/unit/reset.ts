@@ -6,23 +6,17 @@ suite('Reset', ({ expect, spy }) => {
 
   beforeEach(() => reset = new Reset());
 
-  describe('init()', () => {
-    it('should call expose()', () => {
-      const expose = reset.expose = spy();
+  describe('constructor()', () => {
+    describe('state()', () => {
+      describe('onClick()', () => {
+        it('should call flux.reset()', () => {
+          const fluxReset = spy();
+          reset.flux = <any>{ reset: fluxReset };
 
-      reset.init();
+          reset.state.onClick();
 
-      expect(expose.calledWith('reset')).to.be.true;
-    });
-
-    describe('onClick()', () => {
-      it('should call flux.reset()', () => {
-        const fluxReset = spy();
-        reset.flux = <any>{ reset: fluxReset };
-
-        reset.state.onClick();
-
-        expect(fluxReset.called).to.be.true;
+          expect(fluxReset.called).to.be.true;
+        });
       });
     });
   });

@@ -7,52 +7,41 @@ suite('Query', ({ expect, spy }) => {
   beforeEach(() => query = new Query());
 
   describe('constructor()', () => {
-    it('should set initial registered', () => {
-      query.expose = () => null;
-
-      query.init();
-
+    it('should set default values', () => {
       expect(query.registered).to.eql([]);
+      expect(query.props).to.eql({ mode: 'default' });
     });
 
-    it('should call expose()', () => {
-      const expose = query.expose = spy();
+    describe('state()', () => {
+      describe('submit()', () => {
+        it('should call flux.search() with the value of the first registered search-box', () => {
+          const value = 'high tops';
+          const search = spy();
+          query.flux = <any>{ search };
+          query.registered = <any[]>[{ refs: { searchBox: { value } } }];
 
-      query.init();
+          query.state.submit();
 
-      expect(expose.calledWith('query')).to.be.true;
-    });
-  });
+          expect(search.calledWith(value)).to.be.true;
+        });
 
-  describe('init()', () => {
-    describe('submit()', () => {
-      it('should call flux.search() with the value of the first registered search-box', () => {
-        const value = 'high tops';
-        const search = spy();
-        query.flux = <any>{ search };
-        query.registered = <any[]>[{ refs: { searchBox: { value } } }];
+        it('should not call flux.search() if no registered search-box', () => {
+          const search = spy();
+          query.flux = <any>{ search: () => expect.fail() };
+          query.registered = [];
 
-        query.state.submit();
-
-        expect(search.calledWith(value)).to.be.true;
+          query.state.submit();
+        });
       });
 
-      it('should not call flux.search() if no registered search-box', () => {
-        const search = spy();
-        query.flux = <any>{ search: () => expect.fail() };
-        query.registered = [];
+      describe('register()', () => {
+        it('should add to registered', () => {
+          const tag: any = { a: 'b' };
 
-        query.state.submit();
-      });
-    });
+          query.state.register(tag);
 
-    describe('register()', () => {
-      it('should add to registered', () => {
-        const tag: any = { a: 'b' };
-
-        query.state.register(tag);
-
-        expect(query.registered).to.eql([tag]);
+          expect(query.registered).to.eql([tag]);
+        });
       });
     });
   });
