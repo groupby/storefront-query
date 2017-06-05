@@ -14,8 +14,13 @@ class SearchBox {
       if (event.keyCode === KEY_ENTER) {
         this.flux.search(event.target.value);
       } else {
-        this.flux.autocomplete(event.target.value);
-        this.flux.emit('sayt:show');
+        const query = event.target.value;
+        if (query) {
+          this.flux.autocomplete(query);
+          this.flux.emit('sayt:show');
+        } else {
+          this.flux.emit('sayt:hide');
+        }
       }
     },
     onBlur: (event) => {
