@@ -15,7 +15,7 @@ suite('Reset', ({ expect, spy }) => {
 
           reset.state.onClick();
 
-          expect(fluxReset.called).to.be.true;
+          expect(fluxReset).to.be.called;
         });
       });
     });

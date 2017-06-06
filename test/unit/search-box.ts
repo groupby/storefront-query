@@ -14,7 +14,7 @@ suite('SearchBox', ({ expect, spy }) => {
 
       searchBox.init();
 
-      expect(on.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery)).to.be.true;
+      expect(on).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
     });
   });
 
@@ -26,7 +26,7 @@ suite('SearchBox', ({ expect, spy }) => {
 
       searchBox.updateOriginalQuery(originalQuery);
 
-      expect(set.calledWith({ originalQuery })).to.be.true;
+      expect(set).to.be.calledWith({ originalQuery });
     });
 
     it('should not set originalQuery if value will not change', () => {
@@ -53,7 +53,7 @@ suite('SearchBox', ({ expect, spy }) => {
 
       searchBox.onBeforeMount();
 
-      expect(register.calledWith(searchBox)).to.be.true;
+      expect(register).to.be.calledWith(searchBox);
     });
 
     it('should not call $query.register() if no $query', () => {

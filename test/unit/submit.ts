@@ -15,7 +15,7 @@ suite('Submit', ({ expect, spy }) => {
 
           submit.state.onClick();
 
-          expect(submitQuery.called).to.be.true;
+          expect(submitQuery).to.be.called;
         });
 
         it('should not call $query.submit() if no $query', () => {

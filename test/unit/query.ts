@@ -22,7 +22,7 @@ suite('Query', ({ expect, spy }) => {
 
           query.state.submit();
 
-          expect(search.calledWith(value)).to.be.true;
+          expect(search).to.be.calledWith(value);
         });
 
         it('should not call flux.search() if no registered search-box', () => {
