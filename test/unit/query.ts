@@ -7,9 +7,14 @@ suite('Query', ({ expect, spy }) => {
   beforeEach(() => query = new Query());
 
   describe('constructor()', () => {
-    it('should set default values', () => {
+    it('should set initial values', () => {
       expect(query.registered).to.eql([]);
-      expect(query.props).to.eql({ mode: 'default' });
+    });
+
+    describe('props', () => {
+      it('should set initial value', () => {
+        expect(query.props).to.eql({ mode: 'default', showSayt: true });
+      });
     });
 
     describe('state()', () => {
@@ -22,7 +27,7 @@ suite('Query', ({ expect, spy }) => {
 
           query.state.submit();
 
-          expect(search.calledWith(value)).to.be.true;
+          expect(search).to.be.calledWith(value);
         });
 
         it('should not call flux.search() if no registered search-box', () => {
