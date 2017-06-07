@@ -7,7 +7,8 @@ class Query {
 
   registered: SearchBox[] = [];
   props: Query.Props = {
-    mode: 'default'
+    mode: 'default',
+    showSayt: true
   };
   state: Query.State = {
     register: (tag) => this.registered.push(tag),
@@ -24,6 +25,7 @@ namespace Query {
   export interface Props {
     // TODO handle other modes
     mode: 'default' | 'automatic';
+    showSayt: boolean;
   }
 
   export interface State {

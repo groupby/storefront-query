@@ -13,7 +13,7 @@ suite('Query', ({ expect, spy }) => {
 
     describe('props', () => {
       it('should set initial value', () => {
-        expect(query.props).to.eql({ mode: 'default' });
+        expect(query.props).to.eql({ mode: 'default', showSayt: true });
       });
     });
 
