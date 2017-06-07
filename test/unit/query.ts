@@ -7,9 +7,14 @@ suite('Query', ({ expect, spy }) => {
   beforeEach(() => query = new Query());
 
   describe('constructor()', () => {
-    it('should set default values', () => {
+    it('should set initial values', () => {
       expect(query.registered).to.eql([]);
-      expect(query.props).to.eql({ mode: 'default' });
+    });
+
+    describe('props', () => {
+      it('should set initial value', () => {
+        expect(query.props).to.eql({ mode: 'default' });
+      });
     });
 
     describe('state()', () => {
