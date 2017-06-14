@@ -2,6 +2,7 @@ import { tag, Events, Tag } from '@storefront/core';
 import Query from '../query';
 
 const KEY_ENTER = 13;
+const KEY_ESCAPE = 27;
 
 @tag('gb-search-box', require('./index.html'))
 class SearchBox {
@@ -13,6 +14,8 @@ class SearchBox {
       event.preventUpdate = true;
       if (event.keyCode === KEY_ENTER) {
         this.flux.search(event.target.value);
+      } else if (event.keyCode === KEY_ESCAPE) {
+        this.flux.emit('sayt:hide');
       } else {
         const query = event.target.value;
         if (query) {
@@ -22,10 +25,6 @@ class SearchBox {
           this.flux.emit('sayt:hide');
         }
       }
-    },
-    onBlur: (event) => {
-      event.preventUpdate = true;
-      this.flux.emit('sayt:hide');
     }
   };
 
@@ -49,7 +48,6 @@ namespace SearchBox {
   export interface State {
     originalQuery?: string;
     onKeyUp(event: InputKeyboardEvent): void;
-    onBlur(event: FocusEvent & Tag.Event): void;
   }
 
   export interface InputKeyboardEvent extends KeyboardEvent, Tag.Event {
