@@ -12,18 +12,17 @@ class SearchBox {
   state: SearchBox.State = {
     onKeyUp: (event) => {
       event.preventUpdate = true;
-      if (event.keyCode === KEY_ENTER) {
-        this.flux.search(event.target.value);
-      } else if (event.keyCode === KEY_ESCAPE) {
-        this.flux.emit('sayt:hide');
-      } else {
-        const query = event.target.value;
-        if (query) {
-          this.flux.autocomplete(query);
-          this.flux.emit('sayt:show');
-        } else {
-          this.flux.emit('sayt:hide');
-        }
+      switch (event.keyCode) {
+        case KEY_ENTER: return this.flux.search(event.target.value);
+        case KEY_ESCAPE: return this.flux.emit('sayt:hide');
+        default:
+          const query = event.target.value;
+          if (query) {
+            this.flux.autocomplete(query);
+            this.flux.emit('sayt:show');
+          } else {
+            this.flux.emit('sayt:hide');
+          }
       }
     }
   };
