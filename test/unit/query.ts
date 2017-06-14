@@ -37,6 +37,17 @@ suite('Query', ({ expect, spy }) => {
 
           query.state.submit();
         });
+
+        it('should trim whitespace', () => {
+          const value = '  \tab  c   ';
+          const search = spy();
+          query.flux = <any>{ search };
+          query.registered = <any[]>[{ refs: { searchBox: { value } } }];
+
+          query.state.submit();
+
+          expect(search).to.be.calledWith('ab  c');
+        });
       });
 
       describe('register()', () => {
