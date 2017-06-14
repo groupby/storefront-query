@@ -13,7 +13,7 @@ class SearchBox {
     onKeyUp: (event) => {
       event.preventUpdate = true;
       switch (event.keyCode) {
-        case KEY_ENTER: return this.flux.search(event.target.value);
+        case KEY_ENTER: return this.$query.submit();
         case KEY_ESCAPE: return this.flux.emit('sayt:hide');
         default:
           const query = event.target.value;

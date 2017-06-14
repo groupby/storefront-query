@@ -37,6 +37,35 @@ suite('Query', ({ expect, spy }) => {
 
           query.state.submit();
         });
+
+        it('should trim whitespace', () => {
+          const value = '  \tab  c   ';
+          const search = spy();
+          query.flux = <any>{ search };
+          query.registered = <any[]>[{ refs: { searchBox: { value } } }];
+
+          query.state.submit();
+
+          expect(search).to.be.calledWith('ab  c');
+        });
+
+        it('should not call flux.search() if search term is empty', () => {
+          const value = '';
+          const search = spy();
+          query.flux = <any>{ search: () => expect.fail() };
+          query.registered = <any[]>[{ refs: { searchBox: { value } } }];
+
+          query.state.submit();
+        });
+
+        it('should not call flux.search() if search term contains only whitespace', () => {
+          const value = '  \t\n  ';
+          const search = spy();
+          query.flux = <any>{ search: () => expect.fail() };
+          query.registered = <any[]>[{ refs: { searchBox: { value } } }];
+
+          query.state.submit();
+        });
       });
 
       describe('register()', () => {

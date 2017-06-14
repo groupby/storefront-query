@@ -14,7 +14,10 @@ class Query {
     register: (tag) => this.registered.push(tag),
     submit: () => {
       if (this.registered.length !== 0) {
-        this.flux.search(this.registered[0].refs.searchBox.value);
+        const searchValue = this.registered[0].refs.searchBox.value.trim();
+        if (searchValue) {
+          this.flux.search(searchValue);
+        }
       }
     }
   };

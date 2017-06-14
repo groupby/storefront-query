@@ -13,20 +13,21 @@ suite('SearchBox', ({ expect, spy }) => {
         it('should set preventUpdate', () => {
           const event: any = { keyCode: 13, target: {} };
           searchBox.flux = <any>{ search: () => null };
+          searchBox.$query = <any>{ submit: () => null };
 
           searchBox.state.onKeyUp(event);
 
           expect(event.preventUpdate).to.be.true;
         });
 
-        it('should call flux.search()', () => {
+        it('should call $query.submit()', () => {
           const value = 'hula hoop';
-          const search = spy();
-          searchBox.flux = <any>{ search };
+          const submitQuery = spy();
+          searchBox.$query = <any>{ submit: submitQuery };
 
           searchBox.state.onKeyUp(<any>{ keyCode: 13, target: { value } });
 
-          expect(search).to.be.calledWith(value);
+          expect(submitQuery).to.be.called;
         });
 
         it('should hide sayt on ESC pressed', () => {
