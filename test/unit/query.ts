@@ -57,6 +57,15 @@ suite('Query', ({ expect, spy }) => {
 
           query.state.submit();
         });
+
+        it('should not call flux.search() if search term contains only whitespace', () => {
+          const value = '  \t\n  ';
+          const search = spy();
+          query.flux = <any>{ search: () => expect.fail() };
+          query.registered = <any[]>[{ refs: { searchBox: { value } } }];
+
+          query.state.submit();
+        });
       });
 
       describe('register()', () => {
