@@ -48,6 +48,15 @@ suite('Query', ({ expect, spy }) => {
 
           expect(search).to.be.calledWith('ab  c');
         });
+
+        it('should not call flux.search() if search term is empty', () => {
+          const value = '';
+          const search = spy();
+          query.flux = <any>{ search: () => expect.fail() };
+          query.registered = <any[]>[{ refs: { searchBox: { value } } }];
+
+          query.state.submit();
+        });
       });
 
       describe('register()', () => {

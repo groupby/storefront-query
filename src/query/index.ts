@@ -15,7 +15,9 @@ class Query {
     submit: () => {
       if (this.registered.length !== 0) {
         const searchValue = this.registered[0].refs.searchBox.value.trim();
-        this.flux.search(searchValue);
+        if (searchValue) {
+          this.flux.search(searchValue);
+        }
       }
     }
   };
