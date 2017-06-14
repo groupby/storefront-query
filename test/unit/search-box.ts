@@ -29,6 +29,15 @@ suite('SearchBox', ({ expect, spy }) => {
           expect(search).to.be.calledWith(value);
         });
 
+        it('should hide sayt on ESC pressed', () => {
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
+
+          searchBox.state.onKeyUp(<any>{ keyCode: 27 });
+
+          expect(emit).to.be.calledWith('sayt:hide');
+        });
+
         it('should call flux.autocomplete()', () => {
           const value = 'hula hoop';
           const autocomplete = spy();
@@ -50,80 +59,60 @@ suite('SearchBox', ({ expect, spy }) => {
           expect(emit).to.be.calledWith('sayt:hide');
         });
       });
+    });
 
-      describe('onBlur()', () => {
-        it('should set preventUpdate', () => {
-          const event: any = {};
-          searchBox.flux = <any>{ emit: () => null };
+    describe('init()', () => {
+      it('should listen for ORIGINAL_QUERY_UPDATED', () => {
+        const on = spy();
+        searchBox.flux = <any>{ on };
 
-          searchBox.state.onBlur(event);
+        searchBox.init();
 
-          expect(event.preventUpdate).to.be.true;
-        });
-
-        it('should emit hide:sayt', () => {
-          const emit = spy();
-          searchBox.flux = <any>{ emit };
-
-          searchBox.state.onBlur(<any>{});
-
-          expect(emit).to.be.calledWith('sayt:hide');
-        });
+        expect(on).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
       });
     });
-  });
 
-  describe('init()', () => {
-    it('should listen for ORIGINAL_QUERY_UPDATED', () => {
-      const on = spy();
-      searchBox.flux = <any>{ on };
+    describe('updateOriginalQuery()', () => {
+      it('should set originalQuery', () => {
+        const originalQuery = 'orange soda';
+        const set = searchBox.set = spy();
+        searchBox.state = <any>{ originalQuery: 'cherry soda' };
 
-      searchBox.init();
+        searchBox.updateOriginalQuery(originalQuery);
 
-      expect(on).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
-    });
-  });
+        expect(set).to.be.calledWith({ originalQuery });
+      });
 
-  describe('updateOriginalQuery()', () => {
-    it('should set originalQuery', () => {
-      const originalQuery = 'orange soda';
-      const set = searchBox.set = spy();
-      searchBox.state = <any>{ originalQuery: 'cherry soda' };
+      it('should not set originalQuery if value will not change', () => {
+        searchBox.state = <any>{};
+        searchBox.refs = <any>{ searchBox: { value: '' } };
+        searchBox.set = () => expect.fail();
 
-      searchBox.updateOriginalQuery(originalQuery);
+        searchBox.updateOriginalQuery(undefined);
 
-      expect(set).to.be.calledWith({ originalQuery });
-    });
+        searchBox.refs = <any>{ searchBox: { value: 'cherry hardwood' } };
 
-    it('should not set originalQuery if value will not change', () => {
-      searchBox.state = <any>{};
-      searchBox.refs = <any>{ searchBox: { value: '' } };
-      searchBox.set = () => expect.fail();
+        searchBox.updateOriginalQuery('cherry hardwood');
 
-      searchBox.updateOriginalQuery(undefined);
+        searchBox.state = <any>{ originalQuery: 'masonry' };
 
-      searchBox.refs = <any>{ searchBox: { value: 'cherry hardwood' } };
-
-      searchBox.updateOriginalQuery('cherry hardwood');
-
-      searchBox.state = <any>{ originalQuery: 'masonry' };
-
-      searchBox.updateOriginalQuery('masonry');
-    });
-  });
-
-  describe('onBeforeMount()', () => {
-    it('should call $query.register()', () => {
-      const register = spy();
-      searchBox.$query = <any>{ register };
-
-      searchBox.onBeforeMount();
-
-      expect(register).to.be.calledWith(searchBox);
+        searchBox.updateOriginalQuery('masonry');
+      });
     });
 
-    it('should not call $query.register() if no $query', () => {
-      expect(() => searchBox.onBeforeMount()).to.not.throw();
+    describe('onBeforeMount()', () => {
+      it('should call $query.register()', () => {
+        const register = spy();
+        searchBox.$query = <any>{ register };
+
+        searchBox.onBeforeMount();
+
+        expect(register).to.be.calledWith(searchBox);
+      });
+
+      it('should not call $query.register() if no $query', () => {
+        expect(() => searchBox.onBeforeMount()).to.not.throw();
+      });
     });
   });
 });
