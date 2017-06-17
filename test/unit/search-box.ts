@@ -66,13 +66,31 @@ suite('SearchBox', ({ expect, spy }) => {
           expect(emit).to.be.calledWith('sayt:show');
         });
 
-        it('should emit hide:sayt', () => {
+        it('should emit sayt:hide on blank query', () => {
           const emit = spy();
           searchBox.flux = <any>{ emit };
 
           searchBox.state.onKeyUp(<any>{ target: {} });
 
           expect(emit).to.be.calledWith('sayt:hide');
+        });
+
+        it('should emit sayt:activate_next on arrow down pressed', () => {
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
+
+          searchBox.state.onKeyUp(<any>{ keyCode: 40 });
+
+          expect(emit).to.be.calledWith('sayt:activate_next');
+        });
+
+        it('should emit sayt:activate_previous on arrow up pressed', () => {
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
+
+          searchBox.state.onKeyUp(<any>{ keyCode: 38 });
+
+          expect(emit).to.be.calledWith('sayt:activate_previous');
         });
       });
     });
