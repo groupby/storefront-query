@@ -9,6 +9,22 @@ suite('SearchBox', ({ expect, spy }) => {
 
   describe('constructor()', () => {
     describe('state', () => {
+      describe('onKeyDown()', () => {
+        it('should call event.preventDefault() if keyCode is up or down', () => {
+          const preventDefault = spy();
+
+          searchBox.state.onKeyDown(<any>{ keyCode: 38, preventDefault });
+          searchBox.state.onKeyDown(<any>{ keyCode: 40, preventDefault });
+
+          expect(preventDefault).to.be.calledTwice;
+        });
+
+        it('should not call event.preventDefault() if keyCode is any other key', () => {
+          const preventDefault = () => expect.fail();
+
+          searchBox.state.onKeyDown(<any>{ keyCode: 13, preventDefault });
+        });
+      });
       describe('onKeyUp()', () => {
         it('should set preventUpdate', () => {
           const event: any = { keyCode: 13, target: {} };
