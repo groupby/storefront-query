@@ -17,7 +17,12 @@ class SearchBox {
     onKeyUp: (event) => {
       event.preventUpdate = true;
       switch (event.keyCode) {
-        case KEY_ENTER: return this.flux.search(event.target.value);
+        case KEY_ENTER:
+          if (this.services.autocomplete.hasActiveSuggestion()) {
+            return this.flux.emit('sayt:select_active');
+          } else {
+            return this.flux.search(event.target.value);
+          }
         case KEY_ESCAPE: return this.flux.emit('sayt:hide');
         case KEY_UP: return this.flux.emit('sayt:activate_previous');
         case KEY_DOWN: return this.flux.emit('sayt:activate_next');

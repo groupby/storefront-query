@@ -27,25 +27,36 @@ suite('SearchBox', ({ expect, spy }) => {
       });
       describe('onKeyUp()', () => {
         it('should set preventUpdate', () => {
-          const event: any = { keyCode: 13, target: {} };
-          searchBox.flux = <any>{ search: () => null };
+          const event: any = { keyCode: 10, target: {} };
+          searchBox.flux = <any>{ emit: () => null };
 
           searchBox.state.onKeyUp(event);
 
           expect(event.preventUpdate).to.be.true;
         });
 
-        it('should call flux.search()', () => {
+        it('should call flux.search() if autocomplete is not active on ENTER pressed', () => {
           const value = 'hula hoop';
           const search = spy();
           searchBox.flux = <any>{ search };
+          searchBox.services = <any>{ autocomplete: { hasActiveSuggestion: () => false } };
 
           searchBox.state.onKeyUp(<any>{ keyCode: 13, target: { value } });
 
           expect(search).to.be.calledWith(value);
         });
 
-        it('should hide sayt on ESC pressed', () => {
+        it('should call emit sayt:select_active if autocomplete is active on ENTER pressed', () => {
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
+          searchBox.services = <any>{ autocomplete: { hasActiveSuggestion: () => true } };
+
+          searchBox.state.onKeyUp(<any>{ keyCode: 13 });
+
+          expect(emit).to.be.calledWith('sayt:select_active');
+        });
+
+        it('should emit sayt:hide on ESC pressed', () => {
           const emit = spy();
           searchBox.flux = <any>{ emit };
 
