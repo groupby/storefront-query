@@ -9,27 +9,54 @@ suite('SearchBox', ({ expect, spy }) => {
 
   describe('constructor()', () => {
     describe('state', () => {
+      describe('onKeyDown()', () => {
+        it('should call event.preventDefault() if keyCode is up or down', () => {
+          const preventDefault = spy();
+
+          searchBox.state.onKeyDown(<any>{ keyCode: 38, preventDefault });
+          searchBox.state.onKeyDown(<any>{ keyCode: 40, preventDefault });
+
+          expect(preventDefault).to.be.calledTwice;
+        });
+
+        it('should not call event.preventDefault() if keyCode is any other key', () => {
+          const preventDefault = () => expect.fail();
+
+          searchBox.state.onKeyDown(<any>{ keyCode: 13, preventDefault });
+        });
+      });
       describe('onKeyUp()', () => {
         it('should set preventUpdate', () => {
-          const event: any = { keyCode: 13, target: {} };
-          searchBox.flux = <any>{ search: () => null };
+          const event: any = { keyCode: 10, target: {} };
+          searchBox.flux = <any>{ emit: () => null };
 
           searchBox.state.onKeyUp(event);
 
           expect(event.preventUpdate).to.be.true;
         });
 
-        it('should call flux.search()', () => {
+        it('should call flux.search() if autocomplete is not active on ENTER pressed', () => {
           const value = 'hula hoop';
           const search = spy();
           searchBox.flux = <any>{ search };
+          searchBox.services = <any>{ autocomplete: { hasActiveSuggestion: () => false } };
 
           searchBox.state.onKeyUp(<any>{ keyCode: 13, target: { value } });
 
           expect(search).to.be.calledWith(value);
         });
 
-        it('should hide sayt on ESC pressed', () => {
+        it('should call emit sayt:select_active if autocomplete is active on ENTER pressed', () => {
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
+          searchBox.services = <any>{ autocomplete: { hasActiveSuggestion: () => true } };
+
+          searchBox.state.onKeyUp(<any>{ keyCode: 13 });
+
+          expect(emit).to.be.calledWith('sayt:select_active');
+        });
+
+        it('should emit sayt:hide on ESC pressed', () => {
           const emit = spy();
           searchBox.flux = <any>{ emit };
 
@@ -50,13 +77,31 @@ suite('SearchBox', ({ expect, spy }) => {
           expect(emit).to.be.calledWith('sayt:show');
         });
 
-        it('should emit hide:sayt', () => {
+        it('should emit sayt:hide on blank query', () => {
           const emit = spy();
           searchBox.flux = <any>{ emit };
 
           searchBox.state.onKeyUp(<any>{ target: {} });
 
           expect(emit).to.be.calledWith('sayt:hide');
+        });
+
+        it('should emit sayt:activate_next on arrow down pressed', () => {
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
+
+          searchBox.state.onKeyUp(<any>{ keyCode: 40 });
+
+          expect(emit).to.be.calledWith('sayt:activate_next');
+        });
+
+        it('should emit sayt:activate_previous on arrow up pressed', () => {
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
+
+          searchBox.state.onKeyUp(<any>{ keyCode: 38 });
+
+          expect(emit).to.be.calledWith('sayt:activate_previous');
         });
       });
     });
