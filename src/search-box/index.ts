@@ -11,7 +11,6 @@ class SearchBox {
 
   $query: Query.State;
   refs: { searchBox: HTMLInputElement };
-  cursorLocation: number;
   state: SearchBox.State = {
     onKeyDown: (event) => (event.keyCode === KEY_DOWN || event.keyCode === KEY_UP) && event.preventDefault(),
     onKeyUp: (event) => {
