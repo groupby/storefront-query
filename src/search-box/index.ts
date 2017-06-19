@@ -1,4 +1,4 @@
-import { tag, Events, Tag } from '@storefront/core';
+import { tag, Events, Selectors, Tag } from '@storefront/core';
 import Query from '../query';
 
 const KEY_ENTER = 13;
@@ -12,6 +12,7 @@ class SearchBox {
   $query: Query.State;
   refs: { searchBox: HTMLInputElement };
   state: SearchBox.State = {
+    originalQuery: Selectors.query(this.flux.store.getState()),
     onKeyDown: (event) => (event.keyCode === KEY_DOWN || event.keyCode === KEY_UP) && event.preventDefault(),
     onKeyUp: (event) => {
       event.preventUpdate = true;
