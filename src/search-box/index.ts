@@ -30,7 +30,6 @@ class SearchBox {
           const query = event.target.value;
           if (query) {
             this.flux.autocomplete(query);
-            this.flux.emit('sayt:show');
           } else {
             this.flux.emit('sayt:hide');
           }
