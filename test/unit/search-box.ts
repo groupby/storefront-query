@@ -1,4 +1,5 @@
 import { Events, Selectors } from '@storefront/core';
+import * as sinon from 'sinon';
 import SearchBox from '../../src/search-box';
 import suite from './_suite';
 
@@ -6,18 +7,21 @@ const QUERY = 'blue dress';
 const STATE = { a: 'b' };
 
 suite('SearchBox', ({ expect, spy, stub }) => {
+  let querySelector: sinon.SinonStub;
   let searchBox: SearchBox;
 
   beforeEach(() => {
-    stub(Selectors, 'query').returns(QUERY);
+    querySelector = stub(Selectors, 'query').returns(QUERY);
     SearchBox.prototype.flux = <any>{ store: { getState: () => STATE } };
     searchBox = new SearchBox();
   });
+  afterEach(() => delete SearchBox.prototype.flux);
 
   describe('constructor()', () => {
     describe('state', () => {
       describe('originalQuery', () => {
         it('should set originalQuery from state', () => {
+          expect(querySelector).to.be.calledWith(STATE);
           expect(searchBox.state.originalQuery).to.eq(QUERY);
         });
       });
