@@ -1,14 +1,27 @@
-import { Events } from '@storefront/core';
+import { Events, Selectors } from '@storefront/core';
 import SearchBox from '../../src/search-box';
 import suite from './_suite';
 
-suite('SearchBox', ({ expect, spy }) => {
+const QUERY = 'blue dress';
+const STATE = { a: 'b' };
+
+suite('SearchBox', ({ expect, spy, stub }) => {
   let searchBox: SearchBox;
 
-  beforeEach(() => searchBox = new SearchBox());
+  beforeEach(() => {
+    stub(Selectors, 'query').returns(QUERY);
+    SearchBox.prototype.flux = <any>{ store: { getState: () => STATE } };
+    searchBox = new SearchBox();
+  });
 
   describe('constructor()', () => {
     describe('state', () => {
+      describe('originalQuery', () => {
+        it('should set originalQuery from state', () => {
+          expect(searchBox.state.originalQuery).to.eq(QUERY);
+        });
+      });
+
       describe('onKeyDown()', () => {
         it('should call event.preventDefault() if keyCode is up or down', () => {
           const preventDefault = spy();
@@ -105,59 +118,59 @@ suite('SearchBox', ({ expect, spy }) => {
         });
       });
     });
+  });
 
-    describe('init()', () => {
-      it('should listen for ORIGINAL_QUERY_UPDATED', () => {
-        const on = spy();
-        searchBox.flux = <any>{ on };
+  describe('init()', () => {
+    it('should listen for ORIGINAL_QUERY_UPDATED', () => {
+      const on = spy();
+      searchBox.flux = <any>{ on };
 
-        searchBox.init();
+      searchBox.init();
 
-        expect(on).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
-      });
+      expect(on).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
+    });
+  });
+
+  describe('updateOriginalQuery()', () => {
+    it('should set originalQuery', () => {
+      const originalQuery = 'orange soda';
+      const set = searchBox.set = spy();
+      searchBox.state = <any>{ originalQuery: 'cherry soda' };
+
+      searchBox.updateOriginalQuery(originalQuery);
+
+      expect(set).to.be.calledWith({ originalQuery });
     });
 
-    describe('updateOriginalQuery()', () => {
-      it('should set originalQuery', () => {
-        const originalQuery = 'orange soda';
-        const set = searchBox.set = spy();
-        searchBox.state = <any>{ originalQuery: 'cherry soda' };
+    it('should not set originalQuery if value will not change', () => {
+      searchBox.state = <any>{};
+      searchBox.refs = <any>{ searchBox: { value: '' } };
+      searchBox.set = () => expect.fail();
 
-        searchBox.updateOriginalQuery(originalQuery);
+      searchBox.updateOriginalQuery(undefined);
 
-        expect(set).to.be.calledWith({ originalQuery });
-      });
+      searchBox.refs = <any>{ searchBox: { value: 'cherry hardwood' } };
 
-      it('should not set originalQuery if value will not change', () => {
-        searchBox.state = <any>{};
-        searchBox.refs = <any>{ searchBox: { value: '' } };
-        searchBox.set = () => expect.fail();
+      searchBox.updateOriginalQuery('cherry hardwood');
 
-        searchBox.updateOriginalQuery(undefined);
+      searchBox.state = <any>{ originalQuery: 'masonry' };
 
-        searchBox.refs = <any>{ searchBox: { value: 'cherry hardwood' } };
+      searchBox.updateOriginalQuery('masonry');
+    });
+  });
 
-        searchBox.updateOriginalQuery('cherry hardwood');
+  describe('onBeforeMount()', () => {
+    it('should call $query.register()', () => {
+      const register = spy();
+      searchBox.$query = <any>{ register };
 
-        searchBox.state = <any>{ originalQuery: 'masonry' };
+      searchBox.onBeforeMount();
 
-        searchBox.updateOriginalQuery('masonry');
-      });
+      expect(register).to.be.calledWith(searchBox);
     });
 
-    describe('onBeforeMount()', () => {
-      it('should call $query.register()', () => {
-        const register = spy();
-        searchBox.$query = <any>{ register };
-
-        searchBox.onBeforeMount();
-
-        expect(register).to.be.calledWith(searchBox);
-      });
-
-      it('should not call $query.register() if no $query', () => {
-        expect(() => searchBox.onBeforeMount()).to.not.throw();
-      });
+    it('should not call $query.register() if no $query', () => {
+      expect(() => searchBox.onBeforeMount()).to.not.throw();
     });
   });
 });
