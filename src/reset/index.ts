@@ -5,7 +5,7 @@ import { alias, tag, Tag } from '@storefront/core';
 class Reset {
 
   state: Reset.State = {
-    onClick: () => this.flux.reset()
+    onClick: () => this.actions.resetRecall()
   };
 }
 

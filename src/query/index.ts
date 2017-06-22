@@ -14,7 +14,7 @@ class Query {
     register: (tag) => this.registered.push(tag),
     submit: () => {
       if (this.registered.length !== 0) {
-        this.flux.search(this.registered[0].refs.searchBox.value);
+        this.actions.search(this.registered[0].refs.searchBox.value);
       }
     }
   };
