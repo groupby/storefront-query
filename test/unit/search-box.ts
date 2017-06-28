@@ -91,7 +91,6 @@ suite('SearchBox', ({ expect, spy, stub }) => {
           searchBox.state.onKeyUp(<any>{ target: { value } });
 
           expect(autocomplete).to.be.calledWith(value);
-          expect(emit).to.be.calledWith('sayt:show');
         });
 
         it('should emit sayt:hide on blank query', () => {
