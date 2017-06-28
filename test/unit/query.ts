@@ -19,10 +19,10 @@ suite('Query', ({ expect, spy }) => {
 
     describe('state()', () => {
       describe('submit()', () => {
-        it('should call flux.search() with the value of the first registered search-box', () => {
+        it('should call actions.search() with the value of the first registered search-box', () => {
           const value = 'high tops';
           const search = spy();
-          query.flux = <any>{ search };
+          query.actions = <any>{ search };
           query.registered = <any[]>[{ refs: { searchBox: { value } } }];
 
           query.state.submit();
@@ -30,9 +30,9 @@ suite('Query', ({ expect, spy }) => {
           expect(search).to.be.calledWith(value);
         });
 
-        it('should not call flux.search() if no registered search-box', () => {
+        it('should not call actions.search() if no registered search-box', () => {
           const search = spy();
-          query.flux = <any>{ search: () => expect.fail() };
+          query.actions = <any>{ search: () => expect.fail() };
           query.registered = [];
 
           query.state.submit();

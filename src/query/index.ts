@@ -1,7 +1,8 @@
-import { alias, tag, Events, Tag } from '@storefront/core';
+import { alias, origin, tag, Events, Tag } from '@storefront/core';
 import SearchBox from '../search-box';
 
 @alias('query')
+@origin('search')
 @tag('gb-query', require('./index.html'))
 class Query {
 
@@ -14,7 +15,7 @@ class Query {
     register: (tag) => this.registered.push(tag),
     submit: () => {
       if (this.registered.length !== 0) {
-        this.flux.search(this.registered[0].refs.searchBox.value);
+        this.actions.search(this.registered[0].refs.searchBox.value);
       }
     }
   };

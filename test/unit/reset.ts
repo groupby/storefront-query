@@ -9,13 +9,13 @@ suite('Reset', ({ expect, spy }) => {
   describe('constructor()', () => {
     describe('state()', () => {
       describe('onClick()', () => {
-        it('should call flux.reset()', () => {
-          const fluxReset = spy();
-          reset.flux = <any>{ reset: fluxReset };
+        it('should call actions.reset()', () => {
+          const resetRecall = spy();
+          reset.actions = <any>{ resetRecall };
 
           reset.state.onClick();
 
-          expect(fluxReset).to.be.called;
+          expect(resetRecall).to.be.called;
         });
       });
     });

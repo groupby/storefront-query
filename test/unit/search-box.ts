@@ -52,10 +52,10 @@ suite('SearchBox', ({ expect, spy, stub }) => {
           expect(event.preventUpdate).to.be.true;
         });
 
-        it('should call flux.search() if autocomplete is not active on ENTER pressed', () => {
+        it('should call actions.search() if autocomplete is not active on ENTER pressed', () => {
           const value = 'hula hoop';
           const search = spy();
-          searchBox.flux = <any>{ search };
+          searchBox.actions = <any>{ search };
           searchBox.services = <any>{ autocomplete: { hasActiveSuggestion: () => false } };
 
           searchBox.state.onKeyUp(<any>{ keyCode: 13, target: { value } });
@@ -82,15 +82,14 @@ suite('SearchBox', ({ expect, spy, stub }) => {
           expect(emit).to.be.calledWith('sayt:hide');
         });
 
-        it('should call flux.autocomplete()', () => {
+        it('should call actions.autocomplete()', () => {
           const value = 'hula hoop';
-          const autocomplete = spy();
-          const emit = spy();
-          searchBox.flux = <any>{ autocomplete, emit };
+          const updateAutocompleteQuery = spy();
+          searchBox.actions = <any>{ updateAutocompleteQuery };
 
           searchBox.state.onKeyUp(<any>{ target: { value } });
 
-          expect(autocomplete).to.be.calledWith(value);
+          expect(updateAutocompleteQuery).to.be.calledWith(value);
         });
 
         it('should emit sayt:hide on blank query', () => {
