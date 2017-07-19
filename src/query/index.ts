@@ -1,6 +1,7 @@
-import { alias, origin, tag, Events, Tag } from '@storefront/core';
+import { alias, configurable, origin, tag, Events, Tag } from '@storefront/core';
 import SearchBox from '../search-box';
 
+@configurable
 @alias('query')
 @origin('search')
 @tag('gb-query', require('./index.html'))
