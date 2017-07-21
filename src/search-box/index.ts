@@ -38,6 +38,7 @@ class SearchBox {
     onClick: (event) => {
       console.log('im click');
       event.preventUpdate = true;
+      this.flux.emit('sayt:show_recommendations');
     }
   };
 
