@@ -42,6 +42,7 @@ suite('SearchBox', ({ expect, spy, stub }) => {
           searchBox.state.onKeyDown(<any>{ keyCode: 13, preventDefault });
         });
       });
+
       describe('onKeyUp()', () => {
         it('should set preventUpdate', () => {
           const event: any = { keyCode: 10, target: {} };
@@ -117,6 +118,19 @@ suite('SearchBox', ({ expect, spy, stub }) => {
           searchBox.state.onKeyUp(<any>{ keyCode: 38 });
 
           expect(emit).to.be.calledWith('sayt:activate_previous');
+        });
+      });
+
+      describe('onClick()', () => {
+        it('should set preventUpdate and emit sayt:show_recommendations', () => {
+          const event: any = {};
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
+
+          searchBox.state.onClick(event);
+
+          expect(emit).to.be.calledWithExactly('sayt:show_recommendations');
+          expect(event.preventUpdate).to.be.true;
         });
       });
     });

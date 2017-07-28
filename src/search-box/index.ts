@@ -34,6 +34,10 @@ class SearchBox {
             this.flux.emit('sayt:hide');
           }
       }
+    },
+    onClick: (event) => {
+      event.preventUpdate = true;
+      this.flux.emit('sayt:show_recommendations');
     }
   };
 
@@ -58,6 +62,7 @@ namespace SearchBox {
     originalQuery?: string;
     onKeyDown(event: InputKeyboardEvent): void;
     onKeyUp(event: InputKeyboardEvent): void;
+    onClick(event: Tag.Event): void;
   }
 
   export interface InputKeyboardEvent extends KeyboardEvent, Tag.Event {
