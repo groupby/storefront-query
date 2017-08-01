@@ -24,7 +24,7 @@ class Query {
 
 interface Query extends Tag<Query.Props, Query.State> { }
 namespace Query {
-  export interface Props {
+  export interface Props extends Tag.Props {
     // TODO handle other modes
     mode: 'default' | 'automatic';
     showSayt: boolean;
