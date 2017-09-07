@@ -145,6 +145,15 @@ suite('SearchBox', ({ expect, spy, stub }) => {
 
       expect(on).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
     });
+
+    it('should listen for query:update', () => {
+      const on = spy();
+      searchBox.flux = <any>{ on };
+
+      searchBox.init();
+
+      expect(on).to.be.calledWith('query:update', searchBox.updateOriginalQuery);
+    });
   });
 
   describe('updateOriginalQuery()', () => {
