@@ -34,7 +34,8 @@ class SearchBox {
             this.flux.emit('sayt:hide');
           }
           // TODO: add this to flux config interface
-          if (this.flux.config.search['immediateSearch']) {
+          // search is optional in config hence this check
+          if (this.flux.config.search && this.flux.config.search['immediateSearch']) {
             if (this.services.autocomplete.hasActiveSuggestion()) {
               return this.flux.emit('sayt:select_active');
             }
