@@ -33,6 +33,13 @@ class SearchBox {
           } else {
             this.flux.emit('sayt:hide');
           }
+          // TODO: add this to flux config interface
+          if (this.flux.config.search['immediateSearch']) {
+            if (this.services.autocomplete.hasActiveSuggestion()) {
+              return this.flux.emit('sayt:select_active');
+            }
+            return this.actions.search(query);
+          }
       }
     },
     onClick: (event) => {
