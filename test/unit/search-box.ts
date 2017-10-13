@@ -46,7 +46,9 @@ suite('SearchBox', ({ expect, spy, stub }) => {
       describe('onKeyUp()', () => {
         it('should set preventUpdate', () => {
           const event: any = { keyCode: 10, target: {} };
+          const updateAutocompleteQuery = spy();
           searchBox.flux = <any>{ emit: () => null };
+          searchBox.actions = <any>{ updateAutocompleteQuery };
 
           searchBox.state.onKeyUp(event);
 
@@ -95,11 +97,14 @@ suite('SearchBox', ({ expect, spy, stub }) => {
 
         it('should emit sayt:hide on blank query', () => {
           const emit = spy();
+          const updateAutocompleteQuery = spy();
           searchBox.flux = <any>{ emit };
+          searchBox.actions = <any>{ updateAutocompleteQuery };
 
           searchBox.state.onKeyUp(<any>{ target: {} });
 
           expect(emit).to.be.calledWith('sayt:hide');
+          expect(updateAutocompleteQuery).to.be.calledWith('');
         });
 
         it('should emit sayt:activate_next on arrow down pressed', () => {
