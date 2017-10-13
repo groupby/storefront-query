@@ -32,6 +32,7 @@ class SearchBox {
             this.actions.updateAutocompleteQuery(query);
           } else {
             this.flux.emit('sayt:hide');
+            this.actions.updateAutocompleteQuery('');
           }
       }
     },
