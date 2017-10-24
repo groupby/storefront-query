@@ -12,7 +12,7 @@ class SearchBox {
   $query: Query.State;
   refs: { searchBox: HTMLInputElement };
   state: SearchBox.State = {
-    originalQuery: Selectors.query(this.flux.store.getState()),
+    originalQuery: this.select(Selectors.query),
     onKeyDown: (event) => (event.keyCode === KEY_DOWN || event.keyCode === KEY_UP) && event.preventDefault(),
     onKeyUp: (event) => {
       event.preventUpdate = true;
