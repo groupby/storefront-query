@@ -4,15 +4,14 @@ import SearchBox from '../../src/search-box';
 import suite from './_suite';
 
 const QUERY = 'blue dress';
-const STATE = { a: 'b' };
 
 suite('SearchBox', ({ expect, spy, stub }) => {
-  let querySelector: sinon.SinonStub;
+  let select: sinon.SinonSpy;
   let searchBox: SearchBox;
 
   beforeEach(() => {
-    querySelector = stub(Selectors, 'query').returns(QUERY);
-    SearchBox.prototype.flux = <any>{ store: { getState: () => STATE } };
+    select = SearchBox.prototype.select = spy(() => QUERY);
+    SearchBox.prototype.flux = <any>{};
     searchBox = new SearchBox();
   });
   afterEach(() => delete SearchBox.prototype.flux);
@@ -21,7 +20,7 @@ suite('SearchBox', ({ expect, spy, stub }) => {
     describe('state', () => {
       describe('originalQuery', () => {
         it('should set originalQuery from state', () => {
-          expect(querySelector).to.be.calledWith(STATE);
+          expect(select).to.be.calledWith(Selectors.query);
           expect(searchBox.state.originalQuery).to.eq(QUERY);
         });
       });
