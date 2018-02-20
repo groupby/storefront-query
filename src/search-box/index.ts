@@ -51,6 +51,7 @@ class SearchBox {
     if (this.$query) {
       this.$query.register(this);
     }
+    this.services.autocomplete.registerSearchBox(this);
   }
 
   updateOriginalQuery = (originalQuery: string) =>

@@ -192,6 +192,7 @@ suite('SearchBox', ({ expect, spy, stub }) => {
     it('should call $query.register()', () => {
       const register = spy();
       searchBox.$query = <any>{ register };
+      searchBox.services = <any>{ autocomplete: { registerSearchBox: () => null } };
 
       searchBox.onBeforeMount();
 
@@ -199,7 +200,19 @@ suite('SearchBox', ({ expect, spy, stub }) => {
     });
 
     it('should not call $query.register() if no $query', () => {
+      searchBox.services = <any>{ autocomplete: { registerSearchBox: () => null } };
+
       expect(() => searchBox.onBeforeMount()).to.not.throw();
+    });
+
+    it('should register as autocomplete search box', () => {
+      const registerSearchBox = spy();
+      searchBox.$query = <any>{ register: () => null };
+      searchBox.services = <any>{ autocomplete: { registerSearchBox } };
+
+      searchBox.onBeforeMount();
+
+      expect(registerSearchBox).to.be.calledWith(searchBox);
     });
   });
 });
