@@ -87,6 +87,14 @@ suite('SearchBox', ({ expect, spy, stub }) => {
         it('should call actions.autocomplete()', () => {
           const value = 'hula hoop';
           const updateAutocompleteQuery = spy();
+          searchBox.flux = <any>{
+            config: {
+              autocomplete: {
+                searchCharMinLimit: 1
+              }
+            }
+          }
+
           searchBox.actions = <any>{ updateAutocompleteQuery };
 
           searchBox.state.onKeyUp(<any>{ target: { value } });
