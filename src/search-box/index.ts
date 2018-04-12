@@ -28,7 +28,7 @@ class SearchBox {
         case KEY_DOWN: return this.flux.emit('sayt:activate_next');
         default:
           const query = event.target.value;
-          if (query) {
+          if (query && query.length >= this.flux.config.autocomplete.searchCharMinLimit) {
             this.actions.updateAutocompleteQuery(query);
           } else {
             this.flux.emit('sayt:hide');
