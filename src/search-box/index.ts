@@ -43,8 +43,8 @@ class SearchBox {
   };
 
   init() {
-    this.flux.on(Events.ORIGINAL_QUERY_UPDATED, this.updateOriginalQuery);
-    this.flux.on('query:update', this.updateOriginalQuery);
+    this.subscribe(Events.ORIGINAL_QUERY_UPDATED, this.updateOriginalQuery);
+    this.subscribe('query:update', this.updateOriginalQuery);
   }
 
   onBeforeMount() {

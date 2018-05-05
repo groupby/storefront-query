@@ -93,7 +93,7 @@ suite('SearchBox', ({ expect, spy, stub }) => {
                 searchCharMinLimit: 1
               }
             }
-          }
+          };
 
           searchBox.actions = <any>{ updateAutocompleteQuery };
 
@@ -150,21 +150,19 @@ suite('SearchBox', ({ expect, spy, stub }) => {
 
   describe('init()', () => {
     it('should listen for ORIGINAL_QUERY_UPDATED', () => {
-      const on = spy();
-      searchBox.flux = <any>{ on };
+      const subscribe = searchBox.subscribe = spy();
 
       searchBox.init();
 
-      expect(on).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
+      expect(subscribe).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
     });
 
     it('should listen for query:update', () => {
-      const on = spy();
-      searchBox.flux = <any>{ on };
+      const subscribe = searchBox.subscribe = spy();
 
       searchBox.init();
 
-      expect(on).to.be.calledWith('query:update', searchBox.updateOriginalQuery);
+      expect(subscribe).to.be.calledWith('query:update', searchBox.updateOriginalQuery);
     });
   });
 
