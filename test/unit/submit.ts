@@ -1,10 +1,12 @@
 import Submit from '../../src/submit';
 import suite from './_suite';
 
-suite('Submit', ({ expect, spy }) => {
+suite('Submit', ({ expect, spy, itShouldProvideAlias }) => {
   let submit: Submit;
 
-  beforeEach(() => submit = new Submit());
+  beforeEach(() => (submit = new Submit()));
+
+  itShouldProvideAlias(Submit, 'submit');
 
   describe('constructor()', () => {
     describe('state', () => {

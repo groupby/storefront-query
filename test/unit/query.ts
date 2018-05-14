@@ -1,13 +1,13 @@
 import Query from '../../src/query';
 import suite from './_suite';
 
-suite('Query', ({ expect, spy, itShouldBeConfigurable, itShouldHaveAlias }) => {
+suite('Query', ({ expect, spy, itShouldBeConfigurable, itShouldProvideAlias }) => {
   let query: Query;
 
-  beforeEach(() => query = new Query());
+  beforeEach(() => (query = new Query()));
 
   itShouldBeConfigurable(Query);
-  itShouldHaveAlias(Query, 'query');
+  itShouldProvideAlias(Query, 'query');
 
   describe('constructor()', () => {
     it('should set initial values', () => {

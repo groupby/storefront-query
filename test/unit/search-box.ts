@@ -90,9 +90,9 @@ suite('SearchBox', ({ expect, spy, stub }) => {
           searchBox.flux = <any>{
             config: {
               autocomplete: {
-                searchCharMinLimit: 1
-              }
-            }
+                searchCharMinLimit: 1,
+              },
+            },
           };
 
           searchBox.actions = <any>{ updateAutocompleteQuery };
@@ -150,7 +150,7 @@ suite('SearchBox', ({ expect, spy, stub }) => {
 
   describe('init()', () => {
     it('should listen for ORIGINAL_QUERY_UPDATED', () => {
-      const subscribe = searchBox.subscribe = spy();
+      const subscribe = (searchBox.subscribe = spy());
 
       searchBox.init();
 
@@ -158,7 +158,7 @@ suite('SearchBox', ({ expect, spy, stub }) => {
     });
 
     it('should listen for query:update', () => {
-      const subscribe = searchBox.subscribe = spy();
+      const subscribe = (searchBox.subscribe = spy());
 
       searchBox.init();
 
@@ -169,7 +169,7 @@ suite('SearchBox', ({ expect, spy, stub }) => {
   describe('updateOriginalQuery()', () => {
     it('should set originalQuery', () => {
       const originalQuery = 'orange soda';
-      const set = searchBox.set = spy();
+      const set = (searchBox.set = spy());
       searchBox.state = <any>{ originalQuery: 'cherry soda' };
 
       searchBox.updateOriginalQuery(originalQuery);

@@ -1,4 +1,4 @@
-import { tag, Events, Selectors, Tag } from '@storefront/core';
+import { consume, tag, Events, Selectors, Tag } from '@storefront/core';
 import Query from '../query';
 
 const KEY_ENTER = 13;
@@ -6,9 +6,9 @@ const KEY_ESCAPE = 27;
 const KEY_UP = 38;
 const KEY_DOWN = 40;
 
+@consume('query')
 @tag('gb-search-box', require('./index.html'))
 class SearchBox {
-
   $query: Query.State;
   refs: { searchBox: HTMLInputElement };
   state: SearchBox.State = {
@@ -23,9 +23,12 @@ class SearchBox {
           } else {
             return this.actions.search(event.target.value);
           }
-        case KEY_ESCAPE: return this.flux.emit('sayt:hide');
-        case KEY_UP: return this.flux.emit('sayt:activate_previous');
-        case KEY_DOWN: return this.flux.emit('sayt:activate_next');
+        case KEY_ESCAPE:
+          return this.flux.emit('sayt:hide');
+        case KEY_UP:
+          return this.flux.emit('sayt:activate_previous');
+        case KEY_DOWN:
+          return this.flux.emit('sayt:activate_next');
         default:
           const query = event.target.value;
           if (query && query.length >= this.flux.config.autocomplete.searchCharMinLimit) {
@@ -39,7 +42,7 @@ class SearchBox {
     onClick: (event) => {
       event.preventUpdate = true;
       this.flux.emit('sayt:show_recommendations');
-    }
+    },
   };
 
   init() {
@@ -54,11 +57,10 @@ class SearchBox {
   }
 
   updateOriginalQuery = (originalQuery: string) =>
-    ((originalQuery || '') !== (this.state.originalQuery || this.refs.searchBox.value))
-    && this.set({ originalQuery })
+    (originalQuery || '') !== (this.state.originalQuery || this.refs.searchBox.value) && this.set({ originalQuery })
 }
 
-interface SearchBox extends Tag<any, SearchBox.State> { }
+interface SearchBox extends Tag<any, SearchBox.State> {}
 namespace SearchBox {
   export interface State {
     originalQuery?: string;
