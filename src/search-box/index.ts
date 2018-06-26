@@ -1,4 +1,4 @@
-import { consume, tag, Events, Selectors, Tag } from '@storefront/core';
+import { consume, provide, tag, Events, Selectors, Tag } from '@storefront/core';
 import Query from '../query';
 
 const KEY_ENTER = 13;
@@ -7,6 +7,7 @@ const KEY_UP = 38;
 const KEY_DOWN = 40;
 
 @consume('query')
+@provide('searchBox')
 @tag('gb-search-box', require('./index.html'))
 class SearchBox {
   $query: Query.State;
@@ -57,7 +58,7 @@ class SearchBox {
   }
 
   updateOriginalQuery = (originalQuery: string) =>
-    (originalQuery || '') !== (this.state.originalQuery || this.refs.searchBox.value) && this.set({ originalQuery })
+    (originalQuery || '') !== (this.state.originalQuery || this.refs.searchBox.value) && this.set({ originalQuery });
 }
 
 interface SearchBox extends Tag<any, SearchBox.State> {}
