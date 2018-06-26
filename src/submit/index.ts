@@ -1,6 +1,7 @@
-import { provide, tag, Tag } from '@storefront/core';
+import { consume, provide, tag, Tag } from '@storefront/core';
 import Query from '../query';
 
+@consume('query')
 @provide('submit')
 @tag('gb-submit', require('./index.html'))
 class Submit {

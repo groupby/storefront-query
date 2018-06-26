@@ -5,7 +5,7 @@ import suite from './_suite';
 
 const QUERY = 'blue dress';
 
-suite('SearchBox', ({ expect, spy, stub }) => {
+suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAlias }) => {
   let select: sinon.SinonSpy;
   let searchBox: SearchBox;
 
@@ -15,6 +15,9 @@ suite('SearchBox', ({ expect, spy, stub }) => {
     searchBox = new SearchBox();
   });
   afterEach(() => delete SearchBox.prototype.flux);
+
+  itShouldConsumeAlias(SearchBox, 'query');
+  itShouldProvideAlias(SearchBox, 'searchBox');
 
   describe('constructor()', () => {
     describe('state', () => {
