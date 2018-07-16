@@ -152,20 +152,15 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
   });
 
   describe('init()', () => {
-    it('should listen for ORIGINAL_QUERY_UPDATED', () => {
+    it('should listen for ORIGINAL_QUERY_UPDATED, query:update, and set initial state', () => {
       const subscribe = (searchBox.subscribe = spy());
+      const updateOriginalQuery = (searchBox.updateOriginalQuery = spy());
 
       searchBox.init();
 
-      expect(subscribe).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
-    });
-
-    it('should listen for query:update', () => {
-      const subscribe = (searchBox.subscribe = spy());
-
-      searchBox.init();
-
-      expect(subscribe).to.be.calledWith('query:update', searchBox.updateOriginalQuery);
+      expect(subscribe).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, updateOriginalQuery);
+      expect(subscribe).to.be.calledWith('query:update', updateOriginalQuery);
+      expect(updateOriginalQuery).to.be.calledWith(QUERY);
     });
   });
 
