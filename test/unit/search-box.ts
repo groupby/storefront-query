@@ -154,12 +154,35 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
   describe('init()', () => {
     it('should listen for ORIGINAL_QUERY_UPDATED, query:update, and set initial state', () => {
       const subscribe = (searchBox.subscribe = spy());
-      const updateOriginalQuery = (searchBox.updateOriginalQuery = spy());
 
       searchBox.init();
 
-      expect(subscribe).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, updateOriginalQuery);
-      expect(subscribe).to.be.calledWith('query:update', updateOriginalQuery);
+      expect(subscribe).to.be.calledWith(Events.ORIGINAL_QUERY_UPDATED, searchBox.updateOriginalQuery);
+      expect(subscribe).to.be.calledWith('query:update', searchBox.updateOriginalQuery);
+    });
+  });
+
+  describe('onBeforeMount()', () => {
+    it('should call $query.register()', () => {
+      const register = spy();
+      searchBox.$query = <any>{ register };
+
+      searchBox.onBeforeMount();
+
+      expect(register).to.be.calledWith(searchBox);
+    });
+
+    it('should not call $query.register() if no $query', () => {
+      expect(() => searchBox.onBeforeMount()).to.not.throw();
+    });
+  });
+
+  describe('onMount()', () => {
+    it('should call updateOriginalQuery with initial store state', () => {
+      const updateOriginalQuery = (searchBox.updateOriginalQuery = spy());
+
+      searchBox.onMount();
+
       expect(updateOriginalQuery).to.be.calledWith(QUERY);
     });
   });
@@ -189,21 +212,6 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
       searchBox.state = <any>{ originalQuery: 'masonry' };
 
       searchBox.updateOriginalQuery('masonry');
-    });
-  });
-
-  describe('onBeforeMount()', () => {
-    it('should call $query.register()', () => {
-      const register = spy();
-      searchBox.$query = <any>{ register };
-
-      searchBox.onBeforeMount();
-
-      expect(register).to.be.calledWith(searchBox);
-    });
-
-    it('should not call $query.register() if no $query', () => {
-      expect(() => searchBox.onBeforeMount()).to.not.throw();
     });
   });
 });
