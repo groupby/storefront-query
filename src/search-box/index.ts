@@ -49,14 +49,16 @@ class SearchBox {
   init() {
     this.subscribe(Events.ORIGINAL_QUERY_UPDATED, this.updateOriginalQuery);
     this.subscribe('query:update', this.updateOriginalQuery);
-
-    this.updateOriginalQuery(this.select(Selectors.query));
   }
 
   onBeforeMount() {
     if (this.$query) {
       this.$query.register(this);
     }
+  }
+
+  onMount() {
+    this.updateOriginalQuery(this.select(Selectors.query));
   }
 
   updateOriginalQuery = (originalQuery: string) =>
