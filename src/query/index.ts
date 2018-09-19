@@ -16,6 +16,7 @@ class Query {
     submit: () => {
       if (this.registered.length !== 0) {
         this.actions.search(this.registered[0].refs.searchBox.value);
+        this.flux.emit('sayt:select_navigation_query_match');
       }
     },
   };
