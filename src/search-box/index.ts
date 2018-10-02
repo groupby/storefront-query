@@ -43,9 +43,11 @@ class SearchBox {
           }
       }
     },
-    onClick: (event) => {
+    onClick: (event: MouseEvent & Tag.Event) => {
       event.preventUpdate = true;
-      this.flux.emit('sayt:show_recommendations');
+      if (!(<HTMLInputElement>event.target).value) {
+        this.flux.emit('sayt:show_recommendations');
+      }
     },
   };
 
