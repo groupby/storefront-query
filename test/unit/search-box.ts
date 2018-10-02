@@ -175,6 +175,20 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
     it('should not call $query.register() if no $query', () => {
       expect(() => searchBox.onBeforeMount()).to.not.throw();
     });
+
+    it('should call services.autocomplete.registerSearchBox()', () => {
+      searchBox.services = <any>{ autocomplete: { registerSearchBox: spy() } };
+      searchBox.props.register = true;
+      const registerSearchBox = searchBox.services.autocomplete.registerSearchBox;
+
+      searchBox.onBeforeMount();
+
+      expect(registerSearchBox).to.be.calledWith(searchBox);
+    });
+
+    it('should not call services.autocomplete.registerSearchBox() if no props.register', () => {
+      expect(() => searchBox.onBeforeMount()).to.not.throw();
+    });
   });
 
   describe('onMount()', () => {
