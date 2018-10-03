@@ -148,6 +148,7 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
           expect(emit).to.be.calledWithExactly('sayt:show_recommendations');
           expect(event.preventUpdate).to.be.true;
         });
+
         it('should set preventUpdate and should not emit sayt:show_recommendations if is a value that is not an empty string', () => {
           const value = 'hula hoop';
           const event: any = { target: { value } };
@@ -156,7 +157,7 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
 
           searchBox.state.onClick(event);
 
-          expect(emit).to.not.be.calledWithExactly('sayt:show_recommendations');
+          expect(emit).not.to.be.called;
           expect(event.preventUpdate).to.be.true;
         });
       });
@@ -188,7 +189,7 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
       expect(() => searchBox.onBeforeMount()).to.not.throw();
     });
 
-    it('should call services.autocomplete.registerSearchBox()', () => {
+    it('should register with the autocomplete service if props.register is true', () => {
       const registerSearchBox = spy();
       searchBox.services = <any>{ autocomplete: { registerSearchBox } };
       searchBox.props.register = true;
@@ -198,14 +199,14 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
       expect(registerSearchBox).to.be.calledWith(searchBox);
     });
 
-    it('should not call registerSearchBox() if props.register is false', () => {
+    it('should not register with the autocomplete service if props.register is false', () => {
       const registerSearchBox = spy();
       searchBox.services = <any>{ autocomplete: { registerSearchBox } };
       searchBox.props.register = false;
 
       searchBox.onBeforeMount();
 
-      expect(registerSearchBox).to.not.be.calledWith(searchBox);
+      expect(registerSearchBox).not.to.be.called;
     });
   });
 
