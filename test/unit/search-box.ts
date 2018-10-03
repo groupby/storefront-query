@@ -137,14 +137,26 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
       });
 
       describe('onClick()', () => {
-        it('should set preventUpdate and emit sayt:show_recommendations', () => {
-          const event: any = {};
+        it('should set preventUpdate and should emit sayt:show_recommendations if there is a value of empty string present in the input element of search box', () => {
+          const value = '';
+          const event: any = { target: { value } };
           const emit = spy();
           searchBox.flux = <any>{ emit };
 
           searchBox.state.onClick(event);
 
           expect(emit).to.be.calledWithExactly('sayt:show_recommendations');
+          expect(event.preventUpdate).to.be.true;
+        });
+        it('should set preventUpdate and should not emit sayt:show_recommendations if is a value that is not an empty string', () => {
+          const value = 'hula hoop';
+          const event: any = { target: { value } };
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
+
+          searchBox.state.onClick(event);
+
+          expect(emit).to.not.be.calledWithExactly('sayt:show_recommendations');
           expect(event.preventUpdate).to.be.true;
         });
       });
@@ -177,17 +189,23 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
     });
 
     it('should call services.autocomplete.registerSearchBox()', () => {
-      searchBox.services = <any>{ autocomplete: { registerSearchBox: spy() } };
+      const registerSearchBox = spy();
+      searchBox.services = <any>{ autocomplete: { registerSearchBox } };
       searchBox.props.register = true;
-      const registerSearchBox = searchBox.services.autocomplete.registerSearchBox;
 
       searchBox.onBeforeMount();
 
       expect(registerSearchBox).to.be.calledWith(searchBox);
     });
 
-    it('should not call services.autocomplete.registerSearchBox() if no props.register', () => {
-      expect(() => searchBox.onBeforeMount()).to.not.throw();
+    it('should not call registerSearchBox() if props.register is false', () => {
+      const registerSearchBox = spy();
+      searchBox.services = <any>{ autocomplete: { registerSearchBox } };
+      searchBox.props.register = false;
+
+      searchBox.onBeforeMount();
+
+      expect(registerSearchBox).to.not.be.calledWith(searchBox);
     });
   });
 
