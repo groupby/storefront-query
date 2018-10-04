@@ -137,7 +137,18 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
       });
 
       describe('onClick()', () => {
-        it('should set preventUpdate and should emit sayt:show_recommendations if there is a value of empty string present in the input element of search box', () => {
+        it('should prevent update', () => {
+          const value = '';
+          const event: any = { target: { value } };
+          const emit =  spy();
+          searchBox.flux = <any>{ emit };
+
+          searchBox.state.onClick(event);
+
+          expect(event.preventUpdate).to.be.true;
+        });
+
+        it('should emit sayt:show_recommendations when the search box is empty', () => {
           const value = '';
           const event: any = { target: { value } };
           const emit = spy();
@@ -146,10 +157,9 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
           searchBox.state.onClick(event);
 
           expect(emit).to.be.calledWithExactly('sayt:show_recommendations');
-          expect(event.preventUpdate).to.be.true;
         });
 
-        it('should set preventUpdate and should not emit sayt:show_recommendations if is a value that is not an empty string', () => {
+        it('should not emit sayt:show_recommendations when the search box is not empty', () => {
           const value = 'hula hoop';
           const event: any = { target: { value } };
           const emit = spy();
@@ -158,7 +168,6 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
           searchBox.state.onClick(event);
 
           expect(emit).not.to.be.called;
-          expect(event.preventUpdate).to.be.true;
         });
       });
     });
