@@ -137,22 +137,23 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
       });
 
       describe('onClick()', () => {
-        it('should prevent update', () => {
-          const value = '';
-          const event: any = { target: { value } };
-          const emit =  spy();
-          searchBox.flux = <any>{ emit };
+        let event: any;
+        let emit;
 
+        beforeEach(() => {
+          event = { target: {} };
+          emit = spy();
+          searchBox.flux = <any>{ emit };
+        });
+
+        it('should prevent update', () => {
           searchBox.state.onClick(event);
 
           expect(event.preventUpdate).to.be.true;
         });
 
         it('should emit sayt:show_recommendations when the search box is empty', () => {
-          const value = '';
-          const event: any = { target: { value } };
-          const emit = spy();
-          searchBox.flux = <any>{ emit };
+          event.target.value = '';
 
           searchBox.state.onClick(event);
 
@@ -160,10 +161,7 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
         });
 
         it('should not emit sayt:show_recommendations when the search box is not empty', () => {
-          const value = 'hula hoop';
-          const event: any = { target: { value } };
-          const emit = spy();
-          searchBox.flux = <any>{ emit };
+          event.target.value = 'hula hoop';
 
           searchBox.state.onClick(event);
 
