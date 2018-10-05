@@ -137,15 +137,35 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
       });
 
       describe('onClick()', () => {
-        it('should set preventUpdate and emit sayt:show_recommendations', () => {
-          const event: any = {};
-          const emit = spy();
+        let event: any;
+        let emit;
+
+        beforeEach(() => {
+          event = { target: {} };
+          emit = spy();
           searchBox.flux = <any>{ emit };
+        });
+
+        it('should prevent update', () => {
+          searchBox.state.onClick(event);
+
+          expect(event.preventUpdate).to.be.true;
+        });
+
+        it('should emit sayt:show_recommendations when the search box is empty', () => {
+          event.target.value = '';
 
           searchBox.state.onClick(event);
 
           expect(emit).to.be.calledWithExactly('sayt:show_recommendations');
-          expect(event.preventUpdate).to.be.true;
+        });
+
+        it('should not emit sayt:show_recommendations when the search box is not empty', () => {
+          event.target.value = 'hula hoop';
+
+          searchBox.state.onClick(event);
+
+          expect(emit).not.to.be.called;
         });
       });
     });
@@ -174,6 +194,26 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
 
     it('should not call $query.register() if no $query', () => {
       expect(() => searchBox.onBeforeMount()).to.not.throw();
+    });
+
+    it('should register with the autocomplete service if props.register is true', () => {
+      const registerSearchBox = spy();
+      searchBox.services = <any>{ autocomplete: { registerSearchBox } };
+      searchBox.props.register = true;
+
+      searchBox.onBeforeMount();
+
+      expect(registerSearchBox).to.be.calledWith(searchBox);
+    });
+
+    it('should not register with the autocomplete service if props.register is false', () => {
+      const registerSearchBox = spy();
+      searchBox.services = <any>{ autocomplete: { registerSearchBox } };
+      searchBox.props.register = false;
+
+      searchBox.onBeforeMount();
+
+      expect(registerSearchBox).not.to.be.called;
     });
   });
 

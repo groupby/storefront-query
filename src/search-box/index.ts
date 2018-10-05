@@ -12,6 +12,9 @@ const KEY_DOWN = 40;
 class SearchBox {
   $query: Query.State;
   refs: { searchBox: HTMLInputElement };
+  props: SearchBox.Props = {
+    register: false
+  };
   state: SearchBox.State = {
     originalQuery: this.select(Selectors.query),
     onKeyDown: (event) => (event.keyCode === KEY_DOWN || event.keyCode === KEY_UP) && event.preventDefault(),
@@ -40,9 +43,11 @@ class SearchBox {
           }
       }
     },
-    onClick: (event) => {
+    onClick: (event: MouseEvent & Tag.Event) => {
       event.preventUpdate = true;
-      this.flux.emit('sayt:show_recommendations');
+      if (!(<HTMLInputElement>event.target).value) {
+        this.flux.emit('sayt:show_recommendations');
+      }
     },
   };
 
@@ -52,6 +57,10 @@ class SearchBox {
   }
 
   onBeforeMount() {
+    if (this.props.register) {
+      this.services.autocomplete.registerSearchBox(this);
+    }
+
     if (this.$query) {
       this.$query.register(this);
     }
@@ -65,8 +74,12 @@ class SearchBox {
     (originalQuery || '') !== (this.state.originalQuery || this.refs.searchBox.value) && this.set({ originalQuery });
 }
 
-interface SearchBox extends Tag<any, SearchBox.State> {}
+interface SearchBox extends Tag<SearchBox.Props, SearchBox.State> {}
 namespace SearchBox {
+  export interface Props {
+    register?: boolean;
+  }
+
   export interface State {
     originalQuery?: string;
     onKeyDown(event: InputKeyboardEvent): void;
