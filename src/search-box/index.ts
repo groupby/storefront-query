@@ -10,7 +10,7 @@ const KEY_DOWN = 40;
 @provide('searchBox')
 @tag('gb-search-box', require('./index.html'))
 class SearchBox {
-  $query: Query.State;
+  aliases: SearchBox.Aliases;
   refs: { searchBox: HTMLInputElement };
   state: SearchBox.State = {
     originalQuery: this.select(Selectors.query),
@@ -52,8 +52,10 @@ class SearchBox {
   }
 
   onBeforeMount() {
-    if (this.$query) {
-      this.$query.register(this);
+    console.trace() // DEBUG
+    console.log('DEBUG searchbox aliases', this.aliases);
+    if (this.aliases.query) {
+      this.aliases.query.register(this);
     }
   }
 
@@ -76,6 +78,10 @@ namespace SearchBox {
 
   export interface InputKeyboardEvent extends KeyboardEvent, Tag.Event {
     target: HTMLInputElement;
+  }
+
+  export interface Aliases {
+    query: Query.State;
   }
 }
 

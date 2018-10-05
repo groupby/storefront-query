@@ -5,9 +5,9 @@ import Query from '../query';
 @provide('submit')
 @tag('gb-submit', require('./index.html'))
 class Submit {
-  $query: Query.State;
+  aliases: Submit.Aliases;
   state: Submit.State = {
-    onClick: () => this.$query && this.$query.submit(),
+    onClick: () => this.aliases.query && this.aliases.query.submit(),
   };
 }
 
@@ -15,6 +15,9 @@ interface Submit extends Tag<any, Submit.State> {}
 namespace Submit {
   export interface State {
     onClick(): void;
+  }
+  export interface Aliases {
+    query: Query.State;
   }
 }
 
