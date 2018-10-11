@@ -60,12 +60,15 @@ suite('SearchBox', ({ expect, spy, stub, itShouldConsumeAlias, itShouldProvideAl
         it('should call actions.search() if autocomplete is not active on ENTER pressed', () => {
           const value = 'hula hoop';
           const search = spy();
+          const emit = spy();
+          searchBox.flux = <any>{ emit };
           searchBox.actions = <any>{ search };
           searchBox.services = <any>{ autocomplete: { hasActiveSuggestion: () => false } };
 
           searchBox.state.onKeyUp(<any>{ keyCode: 13, target: { value } });
 
           expect(search).to.be.calledWith(value);
+          expect(emit).to.be.calledWith('sayt:select_navigation_query_match');
         });
 
         it('should call emit sayt:select_active if autocomplete is active on ENTER pressed', () => {

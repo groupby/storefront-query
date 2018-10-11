@@ -25,12 +25,15 @@ suite('Query', ({ expect, spy, itShouldBeConfigurable, itShouldProvideAlias }) =
         it('should call actions.search() with the value of the first registered search-box', () => {
           const value = 'high tops';
           const search = spy();
+          const emit = spy();
+          query.flux = <any>{ emit };
           query.actions = <any>{ search };
           query.registered = <any[]>[{ refs: { searchBox: { value } } }];
 
           query.state.submit();
 
           expect(search).to.be.calledWith(value);
+          expect(emit).to.be.calledWith('sayt:select_navigation_query_match');
         });
 
         it('should not call actions.search() if no registered search-box', () => {
