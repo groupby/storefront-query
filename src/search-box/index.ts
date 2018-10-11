@@ -25,7 +25,8 @@ class SearchBox {
           if (this.services.autocomplete.hasActiveSuggestion()) {
             return this.flux.emit('sayt:select_active');
           } else {
-            return this.actions.search(event.target.value);
+            this.actions.search(event.target.value);
+            return this.flux.emit('sayt:select_navigation_query_match');
           }
         case KEY_ESCAPE:
           return this.flux.emit('sayt:hide');
